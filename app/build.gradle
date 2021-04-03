@@ -2,6 +2,10 @@ plugins {
     id 'com.android.application'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def tmdbApiKey = properties.getProperty('tmdb.key')
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -12,6 +16,8 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "TMDB_API_KEY", tmdbApiKey
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
