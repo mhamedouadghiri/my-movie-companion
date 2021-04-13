@@ -1,11 +1,10 @@
 package com.mhamed.mymoviecompanion;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mhamed.mymoviecompanion.movieApi.Controller;
+import com.mhamed.mymoviecompanion.movieApi.ApiAsync;
 
 import timber.log.Timber;
 
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
             Timber.plant(new Timber.DebugTree());
         }
         Timber.tag("TMDB_API_KEY").i(BuildConfig.TMDB_API_KEY);
-        Controller controller = new Controller();
-        controller.start();
+        ApiAsync apiAsync= new ApiAsync();
+        apiAsync.start((long)3);
     }
 }

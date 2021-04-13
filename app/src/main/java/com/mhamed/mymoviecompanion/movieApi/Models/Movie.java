@@ -1,5 +1,7 @@
 package com.mhamed.mymoviecompanion.movieApi.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -7,41 +9,52 @@ import java.util.Date;
 
 public class Movie {
 
-    private GenreDTO[] genres;
-    private int id;
-    private String imdb_id;
-    private String poster_path;
-    private String backdrop_path;
-    private String release_date;
+    private Genre[] genres;
+    private Long id;
+    @SerializedName(value= "imdb_id")
+    private String imdbId;
+    @SerializedName(value= "poster_path")
+    private String posterPath;
+    @SerializedName(value= "backdrop_path")
+    private String backdropPath;
+    @SerializedName(value= "release_date")
+    private String releaseDate;
     private String status;
     private String title;
-    private double vote_average;
+    @SerializedName(value= "vote_average")
+    private double voteAverage;
     private double popularity;
-    private int vote_count;
+    @SerializedName(value= "vote_count")
+    private Long voteCount;
     private int runtime;
     private String overview;
-    private String original_language;
-    private String original_title;
+    @SerializedName(value= "original_language")
+    private String originalLanguage;
+    @SerializedName(value= "original_title")
+    private String originalTitle;
     private String homepage;
 
-    public GenreDTO[] getGenres() {
+    public Movie() {
+    }
+
+    public Genre[] getGenres() {
         return genres;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
     public String getImdbId() {
-        return imdb_id;
+        return imdbId;
     }
 
     public String getPosterPath() {
-        return poster_path;
+        return posterPath;
     }
 
     public String getReleaseDate() {
-        return release_date;
+        return releaseDate;
     }
 
     public String getStatus() {
@@ -53,7 +66,7 @@ public class Movie {
     }
 
     public double getVoteAverage() {
-        return vote_average;
+        return voteAverage;
     }
 
     public String getOverview() {
@@ -61,11 +74,11 @@ public class Movie {
     }
 
     public String getOriginalLanguage() {
-        return original_language;
+        return originalLanguage;
     }
 
     public String getOriginalTitle() {
-        return original_title;
+        return originalTitle;
     }
 
     public String getHomepage() {
@@ -73,40 +86,20 @@ public class Movie {
     }
 
     public String getBackdropPath() {
-        return backdrop_path;
+        return backdropPath;
     }
 
     public int getRuntime() {
         return runtime;
     }
 
-    public int getVoteCount() {
-        return vote_count;
+    public Long getVoteCount() {
+        return voteCount;
     }
 
     public double getPopularity() {
         return popularity;
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Inner classes
-    |--------------------------------------------------------------------------
-    */
 
-    /**
-     * Genre DTO class
-     */
-    public static class GenreDTO {
-        private int id;
-        private String name;
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-    }
 }

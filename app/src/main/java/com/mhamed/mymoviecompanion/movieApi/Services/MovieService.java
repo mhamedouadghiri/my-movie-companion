@@ -10,5 +10,5 @@ import retrofit2.http.Path;
 public interface MovieService {
 
     @GET("movie/{id}")
-    Call<Movie> getMovieDetails(@Path("id") long id);
+    Call<Movie> getMovieDetails(@Path("id") Long id);
 }
