@@ -1,7 +1,9 @@
-package com.mhamed.mymoviecompanion.movieApi.Models;
+package com.mhamed.mymoviecompanion.movieApi.model;
 
 public class Genre {
+
     private Long id;
+
     private String name;
 
     public Long getId() {

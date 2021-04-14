@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
             Timber.plant(new Timber.DebugTree());
         }
         Timber.tag("TMDB_API_KEY").i(BuildConfig.TMDB_API_KEY);
-        ApiAsync apiAsync= new ApiAsync();
-        apiAsync.start((long)3);
+        ApiAsync apiAsync = new ApiAsync();
+        apiAsync.start((long) 3);
     }
 }

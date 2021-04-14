@@ -1,7 +1,8 @@
 package com.mhamed.mymoviecompanion.movieApi;
 
-import com.mhamed.mymoviecompanion.movieApi.Models.Movie;
-import com.mhamed.mymoviecompanion.movieApi.Services.MovieService;
+import com.mhamed.mymoviecompanion.movieApi.model.Movie;
+import com.mhamed.mymoviecompanion.movieApi.service.MovieService;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -11,9 +12,9 @@ import timber.log.Timber;
 
 public class ApiAsync implements Callback<Movie> {
 
-    public void start(Long id){
+    public void start(Long id) {
         MovieService movieService = ApiClient.getInstance();
-        Call<Movie> call = movieService.getMovieDetails( id );
+        Call<Movie> call = movieService.getMovieDetails(id);
         call.enqueue(this);
     }
 
