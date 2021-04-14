@@ -1,0 +1,15 @@
+{
+  "model": "model.tflite",
+  "inputs": [
+    {
+      "name": "movieFeature",
+      "index": 0,
+      "inputLength": 5
+    }
+  ],
+  "outputLength": 100,
+  "topK": 10,
+  "movieList": "movie_vocab.json",
+  "outputIdsIndex": 1,
+  "outputScoresIndex": 0
+}
