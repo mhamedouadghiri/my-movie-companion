@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
 }
-
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 def tmdbApiKey = properties.getProperty('tmdb.key')
@@ -45,6 +44,7 @@ android {
 
 dependencies {
 
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -56,5 +56,12 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-lite:2.4.0'
     implementation 'org.tensorflow:tensorflow-lite-support:0.1.0'
 
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.5'
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 }
