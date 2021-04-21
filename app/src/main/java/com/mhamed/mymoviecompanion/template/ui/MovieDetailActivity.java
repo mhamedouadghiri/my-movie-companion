@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.Template.ui;
+package com.mhamed.mymoviecompanion.template.ui;
 
 import android.os.Bundle;
 import android.view.animation.AnimationUtils;
@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mhamed.mymoviecompanion.R;
+import com.mhamed.mymoviecompanion.template.adapters.CastAdapter;
+import com.mhamed.mymoviecompanion.template.models.Cast;
 
 import java.util.ArrayList;
 import java.util.List;

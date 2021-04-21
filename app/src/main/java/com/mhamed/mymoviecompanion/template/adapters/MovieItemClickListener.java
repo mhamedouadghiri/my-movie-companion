@@ -1,9 +1,9 @@
-package com.mhamed.mymoviecompanion.Template.adapters;
+package com.mhamed.mymoviecompanion.template.adapters;
 
 
 import android.widget.ImageView;
 
-import com.mhamed.mymoviecompanion.Template.models.Movie;
+import com.mhamed.mymoviecompanion.template.models.Movie;
 
 
 public interface MovieItemClickListener {

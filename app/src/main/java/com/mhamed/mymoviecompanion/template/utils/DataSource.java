@@ -1,7 +1,7 @@
-package com.mhamed.mymoviecompanion.Template.utils;
+package com.mhamed.mymoviecompanion.template.utils;
 
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.Template.models.Movie;
+import com.mhamed.mymoviecompanion.template.models.Movie;
 
 
 import java.util.ArrayList;

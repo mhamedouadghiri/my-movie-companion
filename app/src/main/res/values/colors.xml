@@ -7,4 +7,16 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+
+    -----------------------Moufakkir---------------------------
+
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPink">#cf4bf8</color>
+    <color name="colorViolet">#8813e4</color>
+    <color name="colorBlue">#3d93d9</color>
+    <color name="colorGreenLight">#5ff0f7</color>
+
 </resources>

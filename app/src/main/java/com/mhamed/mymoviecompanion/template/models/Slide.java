@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.Template.models;
+package com.mhamed.mymoviecompanion.template.models;
 
 public class Slide {
 

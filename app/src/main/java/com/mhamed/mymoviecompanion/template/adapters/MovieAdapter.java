@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.Template.adapters;
+package com.mhamed.mymoviecompanion.template.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.Template.models.Movie;
+import com.mhamed.mymoviecompanion.template.models.Movie;
 
 import java.util.List;
 

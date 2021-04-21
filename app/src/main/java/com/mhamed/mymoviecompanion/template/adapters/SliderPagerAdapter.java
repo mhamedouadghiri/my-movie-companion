@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.Template.adapters;
+package com.mhamed.mymoviecompanion.template.adapters;
 
 
 import android.content.Context;
@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.Template.models.Slide;
+import com.mhamed.mymoviecompanion.template.models.Slide;
 
 import java.util.List;
 

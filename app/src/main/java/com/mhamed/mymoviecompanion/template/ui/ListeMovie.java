@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.Template.ui;
+package com.mhamed.mymoviecompanion.template.ui;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -14,12 +14,12 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.Template.adapters.MovieAdapter;
-import com.mhamed.mymoviecompanion.Template.adapters.MovieItemClickListener;
-import com.mhamed.mymoviecompanion.Template.adapters.SliderPagerAdapter;
-import com.mhamed.mymoviecompanion.Template.models.Movie;
-import com.mhamed.mymoviecompanion.Template.models.Slide;
-import com.mhamed.mymoviecompanion.Template.utils.DataSource;
+import com.mhamed.mymoviecompanion.template.adapters.MovieAdapter;
+import com.mhamed.mymoviecompanion.template.adapters.MovieItemClickListener;
+import com.mhamed.mymoviecompanion.template.adapters.SliderPagerAdapter;
+import com.mhamed.mymoviecompanion.template.models.Movie;
+import com.mhamed.mymoviecompanion.template.models.Slide;
+import com.mhamed.mymoviecompanion.template.utils.DataSource;
 
 import java.util.ArrayList;
 import java.util.List;
