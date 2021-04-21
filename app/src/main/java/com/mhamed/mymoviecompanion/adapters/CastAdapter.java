@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.template.adapters;
+package com.mhamed.mymoviecompanion.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,16 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.template.models.Cast;
+import com.mhamed.mymoviecompanion.model.Cast;
 
 import java.util.List;
-
 
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder> {
 
     Context mContext;
     List<Cast> mData;
-
 
     public CastAdapter(Context mContext, List<Cast> mData) {
         this.mContext = mContext;
@@ -30,28 +28,26 @@ public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder
     @NonNull
     @Override
     public CastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_cast, parent ,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_cast, parent, false);
         return new CastViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
-        Glide.with(mContext).load(mData.get(position).getImg_link()).into(holder.img);
+        Glide.with(mContext).load(mData.get(position).getImgLink()).into(holder.img);
     }
 
     @Override
     public int getItemCount() {
-       return  mData.size();
+        return mData.size();
     }
 
-    public  class  CastViewHolder extends  RecyclerView.ViewHolder{
+    public static class CastViewHolder extends RecyclerView.ViewHolder {
         ImageView img;
+
         public CastViewHolder(@NonNull View itemView) {
             super(itemView);
             img = itemView.findViewById(R.id.img_cast);
         }
     }
-
-
 }
-

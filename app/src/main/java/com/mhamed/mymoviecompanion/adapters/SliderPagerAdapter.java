@@ -1,5 +1,4 @@
-package com.mhamed.mymoviecompanion.template.adapters;
-
+package com.mhamed.mymoviecompanion.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,29 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.template.models.Slide;
+import com.mhamed.mymoviecompanion.model.Slide;
 
 import java.util.List;
 
 public class SliderPagerAdapter extends PagerAdapter {
 
-    private Context mContext ;
-    private List<Slide> mList ;
-
+    private Context mContext;
+    private List<Slide> mList;
 
     public SliderPagerAdapter(Context mContext, List<Slide> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }
 
-
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-
-
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View slideLayout = inflater.inflate(R.layout.slide_item,null);
+        View slideLayout = inflater.inflate(R.layout.slide_item, null);
 
         ImageView slideImg = slideLayout.findViewById(R.id.slide_img);
         TextView slideText = slideLayout.findViewById(R.id.slide_title);
@@ -43,12 +38,6 @@ public class SliderPagerAdapter extends PagerAdapter {
 
         container.addView(slideLayout);
         return slideLayout;
-
-
-
-
-
-
     }
 
     @Override
@@ -61,9 +50,8 @@ public class SliderPagerAdapter extends PagerAdapter {
         return view == o;
     }
 
-
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        container.removeView((View)object);
+        container.removeView((View) object);
     }
 }

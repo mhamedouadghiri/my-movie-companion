@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.movieApi.model;
+package com.mhamed.mymoviecompanion.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -28,6 +28,31 @@ public class Movie {
     private String originalTitle;
     private String homepage;
     private Genre[] genres;
+
+    // TODO: remove this
+    // ############################# begin #############################
+    private int posterImage;
+    private int backdropImage;
+
+    public int getPosterImage() {
+        return posterImage;
+    }
+
+    public int getBackdropImage() {
+        return backdropImage;
+    }
+
+    public Movie(String title, int posterImage, int backdropImage) {
+        this.title = title;
+        this.posterImage = posterImage;
+        this.backdropImage = backdropImage;
+    }
+
+    public Movie(String title, int posterImage) {
+        this.title = title;
+        this.posterImage = posterImage;
+    }
+    // ############################# end #############################
 
     public Movie() {
     }
@@ -95,6 +120,4 @@ public class Movie {
     public double getPopularity() {
         return popularity;
     }
-
-
 }

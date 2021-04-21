@@ -1,7 +1,6 @@
-package com.mhamed.mymoviecompanion.movieApi.service;
+package com.mhamed.mymoviecompanion.services;
 
-
-import com.mhamed.mymoviecompanion.movieApi.model.Movie;
+import com.mhamed.mymoviecompanion.model.Movie;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

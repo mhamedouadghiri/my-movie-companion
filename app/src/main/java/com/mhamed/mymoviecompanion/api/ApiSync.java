@@ -1,7 +1,7 @@
-package com.mhamed.mymoviecompanion.movieApi;
+package com.mhamed.mymoviecompanion.api;
 
-import com.mhamed.mymoviecompanion.movieApi.model.Movie;
-import com.mhamed.mymoviecompanion.movieApi.service.MovieService;
+import com.mhamed.mymoviecompanion.model.Movie;
+import com.mhamed.mymoviecompanion.services.MovieService;
 
 import java.io.IOException;
 

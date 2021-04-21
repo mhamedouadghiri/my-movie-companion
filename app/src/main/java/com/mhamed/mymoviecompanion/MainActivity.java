@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mhamed.mymoviecompanion.movieApi.ApiAsync;
-import com.mhamed.mymoviecompanion.template.ui.ListMovie;
+import com.mhamed.mymoviecompanion.api.ApiAsync;
+import com.mhamed.mymoviecompanion.ui.ListMovie;
 
 import timber.log.Timber;
 

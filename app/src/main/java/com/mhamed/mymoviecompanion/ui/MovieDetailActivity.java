@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.template.ui;
+package com.mhamed.mymoviecompanion.ui;
 
 import android.os.Bundle;
 import android.view.animation.AnimationUtils;
@@ -12,21 +12,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.template.adapters.CastAdapter;
-import com.mhamed.mymoviecompanion.template.models.Cast;
+import com.mhamed.mymoviecompanion.adapters.CastAdapter;
+import com.mhamed.mymoviecompanion.model.Cast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class MovieDetailActivity extends AppCompatActivity {
 
-    private ImageView MovieThumbnailImg,MovieCoverImg;
-    private TextView tv_title,tv_description;
+    private ImageView MovieThumbnailImg, MovieCoverImg;
+    private TextView tv_title, tv_description;
     private FloatingActionButton play_fab;
     private RecyclerView RvCast;
     private CastAdapter castAdapter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +51,20 @@ public class MovieDetailActivity extends AppCompatActivity {
         //getSupportActionBar().setTitle(movieTitle);
         tv_description = findViewById(R.id.detail_movie_desc);
         // setup animation
-        MovieCoverImg.setAnimation(AnimationUtils.loadAnimation(this,R.anim.scale_animation));
-        play_fab.setAnimation(AnimationUtils.loadAnimation(this,R.anim.scale_animation));
+        MovieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
+        play_fab.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
     }
 
-
-
-    void setupRvCast(){
+    void setupRvCast() {
         List<Cast> mdata = new ArrayList<>();
-        mdata.add(new Cast("name",R.drawable.moana));
-        mdata.add(new Cast("name",R.drawable.moana));
-        mdata.add(new Cast("name",R.drawable.moana));
-        mdata.add(new Cast("name",R.drawable.moana));
-        mdata.add(new Cast("name",R.drawable.moana));
-        mdata.add(new Cast("name",R.drawable.moana));
-        castAdapter = new CastAdapter(this,mdata);
+        mdata.add(new Cast("name", R.drawable.moana));
+        mdata.add(new Cast("name", R.drawable.moana));
+        mdata.add(new Cast("name", R.drawable.moana));
+        mdata.add(new Cast("name", R.drawable.moana));
+        mdata.add(new Cast("name", R.drawable.moana));
+        mdata.add(new Cast("name", R.drawable.moana));
+        castAdapter = new CastAdapter(this, mdata);
         RvCast.setAdapter(castAdapter);
-        RvCast.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false));
+        RvCast.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
     }
-
-
 }
