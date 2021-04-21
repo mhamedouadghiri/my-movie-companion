@@ -5,8 +5,8 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mhamed.mymoviecompanion.recommender.TestRecSys;
 import com.mhamed.mymoviecompanion.movieApi.ApiAsync;
+import com.mhamed.mymoviecompanion.template.ui.ListMovie;
 
 import timber.log.Timber;
 
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        startActivity(new Intent(this, TestRecSys.class));
+        startActivity(new Intent(this, ListMovie.class));
 
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
