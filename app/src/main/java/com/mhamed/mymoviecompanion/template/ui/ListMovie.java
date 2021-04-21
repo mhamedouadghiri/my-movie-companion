@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ListeMovie extends AppCompatActivity implements MovieItemClickListener {
+public class ListMovie extends AppCompatActivity implements MovieItemClickListener {
     private List<Slide> lstSlides ;
     private ViewPager sliderpager;
     private TabLayout indicator;
@@ -93,7 +93,7 @@ public class ListeMovie extends AppCompatActivity implements MovieItemClickListe
         intent.putExtra("imgCover",movie.getCoverPhoto());
         // lets crezte the animation
 
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ListeMovie.this,
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ListMovie.this,
                 movieImageView,"sharedName");
         startActivity(intent,options.toBundle());
 
@@ -103,7 +103,7 @@ public class ListeMovie extends AppCompatActivity implements MovieItemClickListe
     class SliderTimer extends TimerTask {
         @Override
         public void run() {
-            ListeMovie.this.runOnUiThread(new Runnable() {
+            ListMovie.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (sliderpager.getCurrentItem()<lstSlides.size()-1) {
