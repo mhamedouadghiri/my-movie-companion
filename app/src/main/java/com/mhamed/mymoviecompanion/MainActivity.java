@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        Timber.tag("TMDB_API_KEY").i(BuildConfig.TMDB_API_KEY);
-        ApiAsync apiAsync = new ApiAsync();
-        apiAsync.start((long) 3);
     }
 }
+
