@@ -1,6 +1,4 @@
-package com.mhamed.mymoviecompanion.movieApi;
-
-import com.mhamed.mymoviecompanion.movieApi.service.MovieService;
+package com.mhamed.mymoviecompanion.remote.api;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;

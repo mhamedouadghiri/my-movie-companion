@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.mhamed.mymoviecompanion.movieApi.ApiAsync;
-
 import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity {
@@ -17,8 +15,6 @@ public class MainActivity extends AppCompatActivity {
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }
-        Timber.tag("TMDB_API_KEY").i(BuildConfig.TMDB_API_KEY);
-        ApiAsync apiAsync = new ApiAsync();
-        apiAsync.start((long) 3);
     }
 }
+

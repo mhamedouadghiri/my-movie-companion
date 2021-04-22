@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.movieApi.model;
+package com.mhamed.mymoviecompanion.model;
 
 public class Genre {
 

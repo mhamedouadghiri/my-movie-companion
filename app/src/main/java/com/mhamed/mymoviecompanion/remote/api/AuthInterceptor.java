@@ -1,4 +1,4 @@
-package com.mhamed.mymoviecompanion.movieApi;
+package com.mhamed.mymoviecompanion.remote.api;
 
 import com.mhamed.mymoviecompanion.BuildConfig;
 
