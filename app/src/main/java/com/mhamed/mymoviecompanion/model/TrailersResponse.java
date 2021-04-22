@@ -9,6 +9,9 @@ public class TrailersResponse {
     @SerializedName("results")
     private List<Trailer> trailers;
 
+    public TrailersResponse() {
+    }
+
     public List<Trailer> getTrailers() {
         return trailers;
     }

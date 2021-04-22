@@ -1,6 +1,5 @@
 package com.mhamed.mymoviecompanion.remote;
 
-import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.paging.LivePagedListBuilder;
@@ -12,7 +11,6 @@ import com.mhamed.mymoviecompanion.model.RepoMoviesResult;
 import com.mhamed.mymoviecompanion.model.Resource;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.remote.paging.MovieDataSourceFactory;
-import com.mhamed.mymoviecompanion.remote.paging.MoviePageKeyedDataSource;
 
 import java.util.concurrent.Executor;
 
@@ -21,21 +19,16 @@ import retrofit2.Call;
 public class MoviesRemoteDataSource {
 
     private static final int PAGE_SIZE = 20;
-
+    private static volatile MoviesRemoteDataSource sInstance;
+    private final MovieService mMovieService;
     private Executor executor;
 
-    private static volatile MoviesRemoteDataSource sInstance;
-
-    private final MovieService mMovieService;
-
-    private MoviesRemoteDataSource(MovieService movieService,
-                                   Executor executor) {
+    private MoviesRemoteDataSource(MovieService movieService, Executor executor) {
         mMovieService = movieService;
         executor = executor;
     }
 
-    public static MoviesRemoteDataSource getInstance(MovieService movieService,
-                                                     Executor executor) {
+    public static MoviesRemoteDataSource getInstance(MovieService movieService, Executor executor) {
         if (sInstance == null) {
             synchronized (MovieService.class) {
                 if (sInstance == null) {
@@ -50,13 +43,11 @@ public class MoviesRemoteDataSource {
         return mMovieService.getMovieDetails(movieId);
     }
 
-
     /**
      * Load movies for certain filter.
      */
     public RepoMoviesResult loadMoviesFilteredBy(MoviesFilterType sortBy) {
-        MovieDataSourceFactory sourceFactory =
-                new MovieDataSourceFactory(mMovieService, executor, sortBy);
+        MovieDataSourceFactory sourceFactory = new MovieDataSourceFactory(mMovieService, executor, sortBy);
 
         // paging configuration
         PagedList.Config config = new PagedList.Config.Builder()
@@ -69,12 +60,7 @@ public class MoviesRemoteDataSource {
                 .setFetchExecutor(executor)
                 .build();
 
-        LiveData<Resource> networkState = Transformations.switchMap(sourceFactory.sourceLiveData, new Function<MoviePageKeyedDataSource, LiveData<Resource>>() {
-            @Override
-            public LiveData<Resource> apply(MoviePageKeyedDataSource input) {
-                return input.networkState;
-            }
-        });
+        LiveData<Resource> networkState = Transformations.switchMap(sourceFactory.sourceLiveData, input -> input.networkState);
 
         // Get pagedList and network errors exposed to the viewmodel
         return new RepoMoviesResult(

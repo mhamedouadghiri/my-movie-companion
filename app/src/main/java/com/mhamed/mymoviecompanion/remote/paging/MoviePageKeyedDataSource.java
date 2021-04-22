@@ -22,19 +22,13 @@ import retrofit2.Response;
 public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE = 1;
-
-    public MutableLiveData<Resource> networkState = new MutableLiveData<>();
-
     private final MovieService movieService;
-
     private final Executor networkExecutor;
-
     private final MoviesFilterType sortBy;
-
+    public MutableLiveData<Resource> networkState = new MutableLiveData<>();
     public RetryCallback retryCallback = null;
 
-    public MoviePageKeyedDataSource(MovieService movieService,
-                                    Executor networkExecutor, MoviesFilterType sortBy) {
+    public MoviePageKeyedDataSource(MovieService movieService, Executor networkExecutor, MoviesFilterType sortBy) {
         this.movieService = movieService;
         this.networkExecutor = networkExecutor;
         this.sortBy = sortBy;
@@ -59,26 +53,14 @@ public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie
         try {
             Response<MoviesResponse> response = request.execute();
             MoviesResponse data = response.body();
-            List<Movie> movieList =
-                    data != null ? data.getMovies() : Collections.<Movie>emptyList();
+            List<Movie> movieList = data != null ? data.getMovies() : Collections.emptyList();
 
             retryCallback = null;
             networkState.postValue(Resource.success(null));
             callback.onResult(movieList, null, FIRST_PAGE + 1);
         } catch (IOException e) {
             // publish error
-            retryCallback = new RetryCallback() {
-                @Override
-                public void invoke() {
-                    networkExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadInitial(params, callback);
-                        }
-                    });
-
-                }
-            };
+            retryCallback = () -> networkExecutor.execute(() -> loadInitial(params, callback));
             networkState.postValue(Resource.error(e.getMessage(), null));
         }
     }
@@ -109,36 +91,20 @@ public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie
             public void onResponse(Call<MoviesResponse> call, Response<MoviesResponse> response) {
                 if (response.isSuccessful()) {
                     MoviesResponse data = response.body();
-                    List<Movie> movieList =
-                            data != null ? data.getMovies() : Collections.<Movie>emptyList();
+                    List<Movie> movieList = data != null ? data.getMovies() : Collections.emptyList();
 
                     retryCallback = null;
                     callback.onResult(movieList, params.key + 1);
                     networkState.postValue(Resource.success(null));
                 } else {
-                    retryCallback = new RetryCallback() {
-                        @Override
-                        public void invoke() {
-                            loadAfter(params, callback);
-                        }
-                    };
+                    retryCallback = () -> loadAfter(params, callback);
                     networkState.postValue(Resource.error("error code: " + response.code(), null));
                 }
             }
 
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable t) {
-                retryCallback = new RetryCallback() {
-                    @Override
-                    public void invoke() {
-                        networkExecutor.execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                loadAfter(params, callback);
-                            }
-                        });
-                    }
-                };
+                retryCallback = () -> networkExecutor.execute(() -> loadAfter(params, callback));
                 networkState.postValue(Resource.error(t != null ? t.getMessage() : "unknown error", null));
             }
         });
@@ -147,5 +113,4 @@ public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie
     public interface RetryCallback {
         void invoke();
     }
-
 }

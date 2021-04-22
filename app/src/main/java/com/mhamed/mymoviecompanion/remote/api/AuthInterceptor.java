@@ -13,7 +13,6 @@ public class AuthInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
-
         Request request = chain.request();
 
         HttpUrl url = request.url().newBuilder()
@@ -23,5 +22,4 @@ public class AuthInterceptor implements Interceptor {
         request = request.newBuilder().url(url).build();
         return chain.proceed(request);
     }
-
 }

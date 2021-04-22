@@ -4,51 +4,28 @@ import com.google.gson.annotations.SerializedName;
 
 public class Cast {
 
+    private Long id;
+
     @SerializedName("credit_id")
-    private String id;
+    private String creditId;
 
     @SerializedName("character")
     private String characterName;
 
     @SerializedName("gender")
-    private int gender;
+    private Integer gender;
 
     @SerializedName("name")
-    private String actorName;
+    private String name;
 
     @SerializedName("order")
-    private int order;
+    private Integer order;
 
     @SerializedName("profile_path")
     private String profileImagePath;
 
-    public String getId() {
-        return id;
-    }
-
-    public String getCharacterName() {
-        return characterName;
-    }
-
-    public int getGender() {
-        return gender;
-    }
-
-    public String getActorName() {
-        return actorName;
-    }
-
-    public int getOrder() {
-        return order;
-    }
-
-    public String getProfileImagePath() {
-        return profileImagePath;
-    }
- 
-    // TODO: merge these
-    String name;
-    int imgLink;
+    // TODO: remove this
+    private int imgLink;
 
     public Cast() {
     }
@@ -58,12 +35,60 @@ public class Cast {
         this.imgLink = imgLink;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCreditId() {
+        return creditId;
+    }
+
+    public void setCreditId(String creditId) {
+        this.creditId = creditId;
+    }
+
+    public String getCharacterName() {
+        return characterName;
+    }
+
+    public void setCharacterName(String characterName) {
+        this.characterName = characterName;
+    }
+
+    public Integer getGender() {
+        return gender;
+    }
+
+    public void setGender(Integer gender) {
+        this.gender = gender;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    public String getProfileImagePath() {
+        return profileImagePath;
+    }
+
+    public void setProfileImagePath(String profileImagePath) {
+        this.profileImagePath = profileImagePath;
     }
 
     public int getImgLink() {

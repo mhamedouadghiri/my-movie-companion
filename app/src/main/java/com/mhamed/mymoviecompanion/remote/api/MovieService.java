@@ -1,7 +1,5 @@
 package com.mhamed.mymoviecompanion.remote.api;
 
-import androidx.lifecycle.LiveData;
-
 import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.MoviesResponse;
 
@@ -11,6 +9,7 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MovieService {
+
     @GET("movie/popular")
     Call<MoviesResponse> getPopularMovies(@Query("page") int page);
 

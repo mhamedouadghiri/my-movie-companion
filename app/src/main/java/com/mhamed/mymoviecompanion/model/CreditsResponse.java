@@ -9,6 +9,9 @@ public class CreditsResponse {
     @SerializedName("cast")
     public List<Cast> cast;
 
+    public CreditsResponse() {
+    }
+
     public List<Cast> getCast() {
         return cast;
     }

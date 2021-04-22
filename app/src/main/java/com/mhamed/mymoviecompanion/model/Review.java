@@ -16,6 +16,9 @@ public class Review {
     @SerializedName("url")
     private String url;
 
+    public Review() {
+    }
+
     public String getId() {
         return id;
     }

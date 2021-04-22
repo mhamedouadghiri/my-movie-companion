@@ -16,6 +16,9 @@ public class Trailer {
     @SerializedName("name")
     private String title;
 
+    public Trailer() {
+    }
+
     public String getId() {
         return id;
     }

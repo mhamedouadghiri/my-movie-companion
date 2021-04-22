@@ -11,10 +11,10 @@ public class DataSource {
         List<Movie> lstMovies = new ArrayList<>();
         lstMovies.add(new Movie("Moana", R.drawable.moana, R.drawable.spidercover));
         lstMovies.add(new Movie("Black P", R.drawable.blackp, R.drawable.spidercover));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
         return lstMovies;
     }
 
@@ -22,10 +22,10 @@ public class DataSource {
         List<Movie> lstMovies = new ArrayList<>();
         lstMovies.add(new Movie("Moana", R.drawable.moana, R.drawable.spidercover));
         lstMovies.add(new Movie("Black P", R.drawable.blackp, R.drawable.spidercover));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
-        lstMovies.add(new Movie("The Martian", R.drawable.themartian));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
+        lstMovies.add(new Movie("The Martian", R.drawable.themartian, R.drawable.spidercover));
         return lstMovies;
     }
 }
