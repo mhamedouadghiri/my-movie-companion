@@ -6,6 +6,9 @@ public class Genre {
 
     private String name;
 
+    public Genre() {
+    }
+  
     public Long getId() {
         return id;
     }

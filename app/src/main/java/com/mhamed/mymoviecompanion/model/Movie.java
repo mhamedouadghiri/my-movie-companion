@@ -38,6 +38,31 @@ public class Movie {
     @SerializedName("reviews")
     private ReviewsResponse reviewsResponse;
 
+    // TODO: remove this
+    // ############################# begin #############################
+    private int posterImage;
+    private int backdropImage;
+
+    public int getPosterImage() {
+        return posterImage;
+    }
+
+    public int getBackdropImage() {
+        return backdropImage;
+    }
+
+    public Movie(String title, int posterImage, int backdropImage) {
+        this.title = title;
+        this.posterImage = posterImage;
+        this.backdropImage = backdropImage;
+    }
+
+    public Movie(String title, int posterImage) {
+        this.title = title;
+        this.posterImage = posterImage;
+    }
+    // ############################# end #############################
+
     public Movie() {
     }
 
