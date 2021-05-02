@@ -14,7 +14,7 @@ import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.databinding.ItemMovieBinding;
 import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.Resource;
-import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.BaseViewModel;
 
 public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
@@ -30,12 +30,12 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
         }
     };
 
-    private Context context;
+    private final Context context;
+    private final MovieItemClickListener movieItemClickListener;
+    private final BaseViewModel viewModel;
     private Resource resource = null;
-    private MovieItemClickListener movieItemClickListener;
-    private PopularMoviesViewModel viewModel;
 
-    public MovieAdapter(Context context, MovieItemClickListener listener, PopularMoviesViewModel viewModel) {
+    public MovieAdapter(Context context, MovieItemClickListener listener, BaseViewModel viewModel) {
         super(MOVIE_COMPARATOR);
         this.context = context;
         this.viewModel = viewModel;
@@ -45,29 +45,25 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case R.layout.item_movie:
-                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-                return new MyViewHolder(ItemMovieBinding.inflate(layoutInflater, parent, false));
-            case R.layout.item_network_state:
-                View nview = LayoutInflater.from(context).inflate(R.layout.item_network_state, parent, false);
-                return new NetworkStateViewHolder(nview, viewModel);
-            default:
-                throw new IllegalArgumentException("unknown view type " + viewType);
+        if (viewType == R.layout.item_movie) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            return new MyViewHolder(ItemMovieBinding.inflate(layoutInflater, parent, false));
+        } else if (viewType == R.layout.item_network_state) {
+            View nview = LayoutInflater.from(context).inflate(R.layout.item_network_state, parent, false);
+            return new NetworkStateViewHolder(nview, viewModel);
         }
+        throw new IllegalArgumentException("unknown view type " + viewType);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case R.layout.item_movie:
-                ((MyViewHolder) holder).bindTo(getItem(position));
-                break;
-            case R.layout.item_network_state:
-                ((NetworkStateViewHolder) holder).bindTo(resource);
-                break;
-            default:
-                throw new IllegalArgumentException("unknown view type");
+        int itemViewType = getItemViewType(position);
+        if (itemViewType == R.layout.item_movie) {
+            ((MyViewHolder) holder).bindTo(getItem(position));
+        } else if (itemViewType == R.layout.item_network_state) {
+            ((NetworkStateViewHolder) holder).bindTo(resource);
+        } else {
+            throw new IllegalArgumentException("unknown view type");
         }
     }
 
