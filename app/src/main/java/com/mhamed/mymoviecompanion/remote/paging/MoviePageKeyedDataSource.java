@@ -8,12 +8,12 @@ import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.MoviesFilterType;
 import com.mhamed.mymoviecompanion.model.MoviesResponse;
 import com.mhamed.mymoviecompanion.model.Resource;
+import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,15 +22,12 @@ import retrofit2.Response;
 public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE = 1;
-    private final MovieService movieService;
-    private final Executor networkExecutor;
+    private final MovieService movieService = ApiClient.getInstance();
     private final MoviesFilterType sortBy;
     public MutableLiveData<Resource> networkState = new MutableLiveData<>();
     public RetryCallback retryCallback = null;
 
-    public MoviePageKeyedDataSource(MovieService movieService, Executor networkExecutor, MoviesFilterType sortBy) {
-        this.movieService = movieService;
-        this.networkExecutor = networkExecutor;
+    public MoviePageKeyedDataSource(MoviesFilterType sortBy) {
         this.sortBy = sortBy;
     }
 
@@ -60,7 +57,6 @@ public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie
             callback.onResult(movieList, null, FIRST_PAGE + 1);
         } catch (IOException e) {
             // publish error
-            retryCallback = () -> networkExecutor.execute(() -> loadInitial(params, callback));
             networkState.postValue(Resource.error(e.getMessage(), null));
         }
     }
@@ -104,7 +100,6 @@ public class MoviePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie
 
             @Override
             public void onFailure(Call<MoviesResponse> call, Throwable t) {
-                retryCallback = () -> networkExecutor.execute(() -> loadAfter(params, callback));
                 networkState.postValue(Resource.error(t != null ? t.getMessage() : "unknown error", null));
             }
         });

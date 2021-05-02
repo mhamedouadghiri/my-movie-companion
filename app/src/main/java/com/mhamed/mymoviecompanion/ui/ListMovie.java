@@ -8,6 +8,9 @@ import android.widget.ImageView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.paging.PagedList;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -18,8 +21,9 @@ import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
 import com.mhamed.mymoviecompanion.adapters.MovieItemClickListener;
 import com.mhamed.mymoviecompanion.adapters.SliderPagerAdapter;
 import com.mhamed.mymoviecompanion.model.Movie;
+import com.mhamed.mymoviecompanion.model.Resource;
 import com.mhamed.mymoviecompanion.model.Slide;
-import com.mhamed.mymoviecompanion.utils.DataSource;
+import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +35,7 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
     private List<Slide> lstSlides;
     private ViewPager sliderpager;
     private TabLayout indicator;
+    PopularMoviesViewModel viewModel;
     private RecyclerView MoviesRV, moviesRvWeek;
 
     @Override
@@ -45,17 +50,45 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         inPopularMovies();
         iniWeekMovies();
     }
-
+    //for now popular movies duplicated until i implement NowPlayingPoviesViewModel
     private void iniWeekMovies() {
-        MovieAdapter weekMoviesAdapter = new MovieAdapter(this, DataSource.getWeekMovies(), this);
-        moviesRvWeek.setAdapter(weekMoviesAdapter);
+        viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
+        final MovieAdapter movieAdapter =
+                new MovieAdapter(this, this, viewModel);
+        moviesRvWeek.setAdapter(movieAdapter);
         moviesRvWeek.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        viewModel.getPagedList().observe(this, new Observer<PagedList<Movie>>() {
+            @Override
+            public void onChanged(PagedList<Movie> movies) {
+                movieAdapter.submitList(movies);
+            }
+        });
+        viewModel.getNetworkState().observe(this, new Observer<Resource>() {
+            @Override
+            public void onChanged(Resource resource) {
+                movieAdapter.setNetworkState(resource);
+            }
+        });
     }
 
     private void inPopularMovies() {
-        MovieAdapter movieAdapter = new MovieAdapter(this, DataSource.getPopularMovies(), this);
+        viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
+        final MovieAdapter movieAdapter =
+                new MovieAdapter(this, this, viewModel);
         MoviesRV.setAdapter(movieAdapter);
         MoviesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        viewModel.getPagedList().observe(this, new Observer<PagedList<Movie>>() {
+            @Override
+            public void onChanged(PagedList<Movie> movies) {
+                movieAdapter.submitList(movies);
+            }
+        });
+        viewModel.getNetworkState().observe(this, new Observer<Resource>() {
+            @Override
+            public void onChanged(Resource resource) {
+                movieAdapter.setNetworkState(resource);
+            }
+        });
     }
 
     private void iniSlider() {
@@ -89,7 +122,7 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         intent.putExtra("title", movie.getTitle());
         intent.putExtra("imgURL", movie.getPosterImage());
         intent.putExtra("imgCover", movie.getBackdropImage());
-        // lets crezte the animation
+        intent.putExtra("overview", movie.getOverview());
 
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ListMovie.this, movieImageView, "sharedName");
         startActivity(intent, options.toBundle());
