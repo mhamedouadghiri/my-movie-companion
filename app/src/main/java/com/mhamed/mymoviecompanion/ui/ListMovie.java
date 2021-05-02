@@ -27,51 +27,49 @@ import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 import java.util.TimerTask;
 
 public class ListMovie extends AppCompatActivity implements MovieItemClickListener {
 
-    private List<Slide> lstSlides;
-    private ViewPager sliderpager;
+    private PopularMoviesViewModel viewModel;
+    private List<Slide> slides;
+    private ViewPager sliderPager;
     private TabLayout indicator;
-    PopularMoviesViewModel viewModel;
-    private RecyclerView MoviesRV, moviesRvWeek;
+    private RecyclerView MoviesRV;
+    private RecyclerView moviesRvWeek;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_liste_movie);
-        iniViews();
-
-        // prepare a list of slides ..
-        iniSlider();
-
-        inPopularMovies();
-        iniWeekMovies();
+        initViews();
+        initSlider();
+        initPopularMovies();
+//        initWeekMovies();
     }
+
     //for now popular movies duplicated until i implement NowPlayingPoviesViewModel
-    private void iniWeekMovies() {
-        viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
-        final MovieAdapter movieAdapter =
-                new MovieAdapter(this, this, viewModel);
-        moviesRvWeek.setAdapter(movieAdapter);
-        moviesRvWeek.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        viewModel.getPagedList().observe(this, new Observer<PagedList<Movie>>() {
-            @Override
-            public void onChanged(PagedList<Movie> movies) {
-                movieAdapter.submitList(movies);
-            }
-        });
-        viewModel.getNetworkState().observe(this, new Observer<Resource>() {
-            @Override
-            public void onChanged(Resource resource) {
-                movieAdapter.setNetworkState(resource);
-            }
-        });
-    }
+//    private void initWeekMovies() {
+//        viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
+//        final MovieAdapter movieAdapter =
+//                new MovieAdapter(this, this, viewModel);
+//        moviesRvWeek.setAdapter(movieAdapter);
+//        moviesRvWeek.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        viewModel.getPagedList().observe(this, new Observer<PagedList<Movie>>() {
+//            @Override
+//            public void onChanged(PagedList<Movie> movies) {
+//                movieAdapter.submitList(movies);
+//            }
+//        });
+//        viewModel.getNetworkState().observe(this, new Observer<Resource>() {
+//            @Override
+//            public void onChanged(Resource resource) {
+//                movieAdapter.setNetworkState(resource);
+//            }
+//        });
+//    }
 
-    private void inPopularMovies() {
+    private void initPopularMovies() {
         viewModel = ViewModelProviders.of(this).get(PopularMoviesViewModel.class);
         final MovieAdapter movieAdapter =
                 new MovieAdapter(this, this, viewModel);
@@ -91,21 +89,22 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         });
     }
 
-    private void iniSlider() {
-        lstSlides = new ArrayList<>();
-        lstSlides.add(new Slide(R.drawable.slide1, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.slide2, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.slide1, "Slide Title \nmore text here"));
-        lstSlides.add(new Slide(R.drawable.slide2, "Slide Title \nmore text here"));
-        SliderPagerAdapter adapter = new SliderPagerAdapter(this, lstSlides);
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
-        sliderpager.setAdapter(adapter);
-        indicator.setupWithViewPager(sliderpager, true);
+    private void initSlider() {
+        slides = new ArrayList<>();
+        slides.add(new Slide(R.drawable.slide1, "Slide Title \nmore text here"));
+        slides.add(new Slide(R.drawable.slide2, "Slide Title \nmore text here"));
+        slides.add(new Slide(R.drawable.slide1, "Slide Title \nmore text here"));
+        slides.add(new Slide(R.drawable.slide2, "Slide Title \nmore text here"));
+        SliderPagerAdapter adapter = new SliderPagerAdapter(this, slides);
+        // sliding is disturbing
+//        Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
+        sliderPager.setAdapter(adapter);
+        indicator.setupWithViewPager(sliderPager, true);
     }
 
-    public void iniViews() {
-        sliderpager = findViewById(R.id.slider_pager);
+    public void initViews() {
+        sliderPager = findViewById(R.id.slider_pager);
         indicator = findViewById(R.id.indicator);
         MoviesRV = findViewById(R.id.Rv_movies);
         moviesRvWeek = findViewById(R.id.rv_movies_week);
@@ -118,10 +117,12 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         // also we ll create the transition animation between the two activity
 
         Intent intent = new Intent(this, MovieDetailActivity.class);
-        // send movie information to deatilActivity
+        // send movie information to detailActivity
         intent.putExtra("title", movie.getTitle());
-        intent.putExtra("imgURL", movie.getPosterImage());
-        intent.putExtra("imgCover", movie.getBackdropImage());
+        intent.putExtra("posterPath", movie.getPosterPath());
+        intent.putExtra("backdropPath", movie.getBackdropPath());
+//        intent.putExtra("imgURL", movie.getPosterImage());
+//        intent.putExtra("imgCover", movie.getBackdropImage());
         intent.putExtra("overview", movie.getOverview());
 
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ListMovie.this, movieImageView, "sharedName");
@@ -132,10 +133,10 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         @Override
         public void run() {
             ListMovie.this.runOnUiThread(() -> {
-                if (sliderpager.getCurrentItem() < lstSlides.size() - 1) {
-                    sliderpager.setCurrentItem(sliderpager.getCurrentItem() + 1);
+                if (sliderPager.getCurrentItem() < slides.size() - 1) {
+                    sliderPager.setCurrentItem(sliderPager.getCurrentItem() + 1);
                 } else
-                    sliderpager.setCurrentItem(0);
+                    sliderPager.setCurrentItem(0);
             });
         }
     }

@@ -1,10 +1,12 @@
 package com.mhamed.mymoviecompanion.model;
-import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
 public class Resource<T> {
+
     @NonNull
     public final Status status;
     @Nullable
@@ -12,8 +14,7 @@ public class Resource<T> {
     @Nullable
     public final String message;
 
-    private Resource(@NonNull Status status, @Nullable T data,
-                     @Nullable String message) {
+    private Resource(@NonNull Status status, @Nullable T data, @Nullable String message) {
         this.status = status;
         this.data = data;
         this.message = message;
@@ -53,7 +54,6 @@ public class Resource<T> {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(status, data, message);
     }
 
@@ -67,4 +67,3 @@ public class Resource<T> {
         SUCCESS, ERROR, LOADING
     }
 }
-

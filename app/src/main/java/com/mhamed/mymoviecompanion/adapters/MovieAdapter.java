@@ -19,11 +19,22 @@ import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
 
 public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
+    private static final DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR = new DiffUtil.ItemCallback<Movie>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
     private Context context;
     private Resource resource = null;
     private MovieItemClickListener movieItemClickListener;
     private PopularMoviesViewModel viewModel;
-
 
     public MovieAdapter(Context context, MovieItemClickListener listener, PopularMoviesViewModel viewModel) {
         super(MOVIE_COMPARATOR);
@@ -46,7 +57,6 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
                 throw new IllegalArgumentException("unknown view type " + viewType);
         }
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -97,31 +107,19 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView TvTitle;
-        private ImageView ImgMovie;
+        private TextView title;
+        private ImageView image;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            TvTitle = itemView.findViewById(R.id.item_movie_title);
-            ImgMovie = itemView.findViewById(R.id.item_movie_img);
-            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(getItem(getAdapterPosition()), ImgMovie));
+            title = itemView.findViewById(R.id.item_movie_title);
+            image = itemView.findViewById(R.id.item_movie_img);
+            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(getItem(getAdapterPosition()), image));
         }
 
         public void bindTo(Movie movie) {
-            this.ImgMovie.setImageResource(movie.getPosterImage());
-            this.TvTitle.setText(movie.getTitle());
+//            this.image.setImageResource(movie.getPosterImage());
+            this.title.setText(movie.getTitle());
         }
     }
-
-    private static DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR = new DiffUtil.ItemCallback<Movie>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
 }

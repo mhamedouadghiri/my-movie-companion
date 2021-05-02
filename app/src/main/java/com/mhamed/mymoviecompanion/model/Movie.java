@@ -53,17 +53,7 @@ public class Movie {
     @SerializedName("reviews")
     private ReviewsResponse reviewsResponse;
 
-    // TODO: remove these
-    private int posterImage;
-    private int backdropImage;
-
     public Movie() {
-    }
-
-    public Movie(String title, int posterImage, int backdropImage) {
-        this.title = title;
-        this.posterImage = posterImage;
-        this.backdropImage = backdropImage;
     }
 
     public Long getId() {
@@ -216,22 +206,6 @@ public class Movie {
 
     public void setReviewsResponse(ReviewsResponse reviewsResponse) {
         this.reviewsResponse = reviewsResponse;
-    }
-
-    public int getPosterImage() {
-        return posterImage;
-    }
-
-    public void setPosterImage(int posterImage) {
-        this.posterImage = posterImage;
-    }
-
-    public int getBackdropImage() {
-        return backdropImage;
-    }
-
-    public void setBackdropImage(int backdropImage) {
-        this.backdropImage = backdropImage;
     }
 
     @Override
