@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
@@ -13,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhamed.mymoviecompanion.R;
+import com.mhamed.mymoviecompanion.databinding.ItemMovieBinding;
 import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.Resource;
 import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
@@ -48,8 +47,8 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case R.layout.item_movie:
-                View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-                return new MyViewHolder(view);
+                LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+                return new MyViewHolder(ItemMovieBinding.inflate(layoutInflater, parent, false));
             case R.layout.item_network_state:
                 View nview = LayoutInflater.from(context).inflate(R.layout.item_network_state, parent, false);
                 return new NetworkStateViewHolder(nview, viewModel);
@@ -106,20 +105,17 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
         }
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
-        private ImageView image;
+    private class MyViewHolder extends RecyclerView.ViewHolder {
+        private final ItemMovieBinding binding;
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.item_movie_title);
-            image = itemView.findViewById(R.id.item_movie_img);
-            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(getItem(getAdapterPosition()), image));
+        public MyViewHolder(@NonNull ItemMovieBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bindTo(Movie movie) {
-//            this.image.setImageResource(movie.getPosterImage());
-            this.title.setText(movie.getTitle());
+            binding.setMovie(movie);
+            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(movie, itemView.findViewById(R.id.item_movie_img)));
         }
     }
 }
