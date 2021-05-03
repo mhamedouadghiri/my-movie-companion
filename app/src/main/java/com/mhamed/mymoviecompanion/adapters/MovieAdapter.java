@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.paging.PagedListAdapter;
@@ -13,19 +11,31 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mhamed.mymoviecompanion.R;
+import com.mhamed.mymoviecompanion.databinding.ItemMovieBinding;
 import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.Resource;
-import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.BaseViewModel;
 
 public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolder> {
 
-    private Context context;
+    private static final DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR = new DiffUtil.ItemCallback<Movie>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    private final Context context;
+    private final MovieItemClickListener movieItemClickListener;
+    private final BaseViewModel viewModel;
     private Resource resource = null;
-    private MovieItemClickListener movieItemClickListener;
-    private PopularMoviesViewModel viewModel;
 
-
-    public MovieAdapter(Context context, MovieItemClickListener listener, PopularMoviesViewModel viewModel) {
+    public MovieAdapter(Context context, MovieItemClickListener listener, BaseViewModel viewModel) {
         super(MOVIE_COMPARATOR);
         this.context = context;
         this.viewModel = viewModel;
@@ -35,30 +45,25 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        switch (viewType) {
-            case R.layout.item_movie:
-                View view = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
-                return new MyViewHolder(view);
-            case R.layout.item_network_state:
-                View nview = LayoutInflater.from(context).inflate(R.layout.item_network_state, parent, false);
-                return new NetworkStateViewHolder(nview, viewModel);
-            default:
-                throw new IllegalArgumentException("unknown view type " + viewType);
+        if (viewType == R.layout.item_movie) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            return new MyViewHolder(ItemMovieBinding.inflate(layoutInflater, parent, false));
+        } else if (viewType == R.layout.item_network_state) {
+            View nview = LayoutInflater.from(context).inflate(R.layout.item_network_state, parent, false);
+            return new NetworkStateViewHolder(nview, viewModel);
         }
+        throw new IllegalArgumentException("unknown view type " + viewType);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        switch (getItemViewType(position)) {
-            case R.layout.item_movie:
-                ((MyViewHolder) holder).bindTo(getItem(position));
-                break;
-            case R.layout.item_network_state:
-                ((NetworkStateViewHolder) holder).bindTo(resource);
-                break;
-            default:
-                throw new IllegalArgumentException("unknown view type");
+        int itemViewType = getItemViewType(position);
+        if (itemViewType == R.layout.item_movie) {
+            ((MyViewHolder) holder).bindTo(getItem(position));
+        } else if (itemViewType == R.layout.item_network_state) {
+            ((NetworkStateViewHolder) holder).bindTo(resource);
+        } else {
+            throw new IllegalArgumentException("unknown view type");
         }
     }
 
@@ -96,32 +101,17 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
         }
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView TvTitle;
-        private ImageView ImgMovie;
+    private class MyViewHolder extends RecyclerView.ViewHolder {
+        private final ItemMovieBinding binding;
 
-        public MyViewHolder(@NonNull View itemView) {
-            super(itemView);
-            TvTitle = itemView.findViewById(R.id.item_movie_title);
-            ImgMovie = itemView.findViewById(R.id.item_movie_img);
-            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(getItem(getAdapterPosition()), ImgMovie));
+        public MyViewHolder(@NonNull ItemMovieBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         public void bindTo(Movie movie) {
-            this.ImgMovie.setImageResource(movie.getPosterImage());
-            this.TvTitle.setText(movie.getTitle());
+            binding.setMovie(movie);
+            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(movie, itemView.findViewById(R.id.item_movie_img)));
         }
     }
-
-    private static DiffUtil.ItemCallback<Movie> MOVIE_COMPARATOR = new DiffUtil.ItemCallback<Movie>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Movie oldItem, @NonNull Movie newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
 }
