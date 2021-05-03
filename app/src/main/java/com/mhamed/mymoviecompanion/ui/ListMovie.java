@@ -39,8 +39,8 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         setContentView(R.layout.activity_liste_movie);
         initViews();
         initSlider();
-        initMovies(R.id.Rv_movies, PopularMoviesViewModel.class);
-        initMovies(R.id.rv_movies_week, NowPlayingMoviesViewModel.class);
+        initMovies(R.id.popular_movies_recyclerview, PopularMoviesViewModel.class);
+        initMovies(R.id.now_playing_movies_recyvlerview, NowPlayingMoviesViewModel.class);
     }
 
     public void initViews() {
@@ -77,10 +77,7 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         // and we create the transition animation between the two activities
 
         Intent intent = new Intent(this, MovieDetailActivity.class);
-        intent.putExtra("title", movie.getTitle());
-        intent.putExtra("posterPath", movie.getPosterPath());
-        intent.putExtra("backdropPath", movie.getBackdropPath());
-        intent.putExtra("overview", movie.getOverview());
+        intent.putExtra("movie", movie);
 
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ListMovie.this, movieImageView, "sharedName");
         startActivity(intent, options.toBundle());
