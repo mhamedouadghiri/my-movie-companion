@@ -4,9 +4,6 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
@@ -36,39 +32,37 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ListeMovie_Fragment extends Fragment implements MovieItemClickListener {
+public class ListMoviesFragment extends Fragment implements MovieItemClickListener {
+
+    private View view;
     private List<Slide> slides;
     private ViewPager sliderPager;
     private TabLayout indicator;
-    View v;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-         v= inflater.inflate(R.layout.fragment_listemovie, container, false);
-        return v;
+        view = inflater.inflate(R.layout.fragment_list_movies, container, false);
+        return view;
     }
-
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-        sliderPager = getView().findViewById(R.id.slider_pager);
-        indicator = getView().findViewById(R.id.indicator);
+        sliderPager = requireView().findViewById(R.id.slider_pager);
+        indicator = requireView().findViewById(R.id.indicator);
         initSlider();
         initMovies(R.id.popular_movies_recyclerview, PopularMoviesViewModel.class);
         initMovies(R.id.now_playing_movies_recyvlerview, NowPlayingMoviesViewModel.class);
     }
 
-
     private void initMovies(int recyclerViewId, Class<? extends BaseViewModel> clazz) {
-        RecyclerView recyclerView = getView().findViewById(recyclerViewId);
+        RecyclerView recyclerView = requireView().findViewById(recyclerViewId);
         BaseViewModel viewModel = ViewModelProviders.of(this).get(clazz);
         final MovieAdapter movieAdapter = new MovieAdapter(getContext(), this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        viewModel.getPagedList().observe(this, movieAdapter::submitList);
-        viewModel.getNetworkState().observe(this, movieAdapter::setNetworkState);
+        viewModel.getPagedList().observe(getViewLifecycleOwner(), movieAdapter::submitList);
+        viewModel.getNetworkState().observe(getViewLifecycleOwner(), movieAdapter::setNetworkState);
     }
 
     private void initSlider() {
@@ -79,7 +73,7 @@ public class ListeMovie_Fragment extends Fragment implements MovieItemClickListe
         slides.add(new Slide(R.drawable.slide2, "Slide Title"));
         SliderPagerAdapter adapter = new SliderPagerAdapter(getContext(), slides);
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new ListeMovie_Fragment.SliderTimer(), 4000, 6000);
+        timer.scheduleAtFixedRate(new ListMoviesFragment.SliderTimer(), 4000, 6000);
         sliderPager.setAdapter(adapter);
         indicator.setupWithViewPager(sliderPager, true);
     }
@@ -99,17 +93,16 @@ public class ListeMovie_Fragment extends Fragment implements MovieItemClickListe
     class SliderTimer extends TimerTask {
         @Override
         public void run() {
-            if (getActivity() == null)
+            if (getActivity() == null) {
                 return;
-          getActivity().runOnUiThread(() -> {
+            }
+            getActivity().runOnUiThread(() -> {
                 if (sliderPager.getCurrentItem() < slides.size() - 1) {
                     sliderPager.setCurrentItem(sliderPager.getCurrentItem() + 1);
-                } else
+                } else {
                     sliderPager.setCurrentItem(0);
+                }
             });
         }
     }
-
-
-
 }
