@@ -12,19 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMovieCompanion">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".recommender.TestRecSys" />
-
         <activity android:name=".ui.MovieDetailActivity" />
-
-        <activity android:name=".ui.ListMovie" />
     </application>
 
 </manifest>

@@ -3,14 +3,23 @@ package com.mhamed.mymoviecompanion.ui;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
@@ -27,33 +36,37 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ListMovie extends AppCompatActivity implements MovieItemClickListener {
-
+public class ListeMovie_Fragment extends Fragment implements MovieItemClickListener {
     private List<Slide> slides;
     private ViewPager sliderPager;
     private TabLayout indicator;
+    View v;
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+         v= inflater.inflate(R.layout.fragment_listemovie, container, false);
+        return v;
+    }
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_liste_movie);
-        initViews();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        sliderPager = getView().findViewById(R.id.slider_pager);
+        indicator = getView().findViewById(R.id.indicator);
         initSlider();
         initMovies(R.id.popular_movies_recyclerview, PopularMoviesViewModel.class);
         initMovies(R.id.now_playing_movies_recyvlerview, NowPlayingMoviesViewModel.class);
     }
 
-    public void initViews() {
-        sliderPager = findViewById(R.id.slider_pager);
-        indicator = findViewById(R.id.indicator);
-    }
 
     private void initMovies(int recyclerViewId, Class<? extends BaseViewModel> clazz) {
-        RecyclerView recyclerView = findViewById(recyclerViewId);
+        RecyclerView recyclerView = getView().findViewById(recyclerViewId);
         BaseViewModel viewModel = ViewModelProviders.of(this).get(clazz);
-        final MovieAdapter movieAdapter = new MovieAdapter(this, this, viewModel);
+        final MovieAdapter movieAdapter = new MovieAdapter(getContext(), this, viewModel);
         recyclerView.setAdapter(movieAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         viewModel.getPagedList().observe(this, movieAdapter::submitList);
         viewModel.getNetworkState().observe(this, movieAdapter::setNetworkState);
     }
@@ -64,9 +77,9 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         slides.add(new Slide(R.drawable.slide2, "Slide Title"));
         slides.add(new Slide(R.drawable.slide1, "Slide Title"));
         slides.add(new Slide(R.drawable.slide2, "Slide Title"));
-        SliderPagerAdapter adapter = new SliderPagerAdapter(this, slides);
+        SliderPagerAdapter adapter = new SliderPagerAdapter(getContext(), slides);
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new SliderTimer(), 4000, 6000);
+        timer.scheduleAtFixedRate(new ListeMovie_Fragment.SliderTimer(), 4000, 6000);
         sliderPager.setAdapter(adapter);
         indicator.setupWithViewPager(sliderPager, true);
     }
@@ -76,17 +89,19 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
         // here we send movie information to detail activity
         // and we create the transition animation between the two activities
 
-        Intent intent = new Intent(this, MovieDetailActivity.class);
+        Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("movie", movie);
 
-        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(ListMovie.this, movieImageView, "sharedName");
+        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), movieImageView, "sharedName");
         startActivity(intent, options.toBundle());
     }
 
     class SliderTimer extends TimerTask {
         @Override
         public void run() {
-            ListMovie.this.runOnUiThread(() -> {
+            if (getActivity() == null)
+                return;
+          getActivity().runOnUiThread(() -> {
                 if (sliderPager.getCurrentItem() < slides.size() - 1) {
                     sliderPager.setCurrentItem(sliderPager.getCurrentItem() + 1);
                 } else
@@ -94,4 +109,7 @@ public class ListMovie extends AppCompatActivity implements MovieItemClickListen
             });
         }
     }
+
+
+
 }
