@@ -14,12 +14,21 @@ import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.CastAdapter;
 import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
 import com.mhamed.mymoviecompanion.model.Cast;
+import com.mhamed.mymoviecompanion.model.CreditsResponse;
 import com.mhamed.mymoviecompanion.model.Movie;
+import com.mhamed.mymoviecompanion.remote.api.ApiClient;
+import com.mhamed.mymoviecompanion.remote.api.MovieService;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import timber.log.Timber;
+
 public class MovieDetailActivity extends AppCompatActivity {
+
+    private final MovieService movieService = ApiClient.getInstance();
 
     private ActivityMovieDetailBinding binding;
 
@@ -42,19 +51,32 @@ public class MovieDetailActivity extends AppCompatActivity {
         ImageView movieCoverImg = findViewById(R.id.detail_movie_cover);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
-        setCastRecyclerView();
+        setCastRecyclerView(movie.getId());
     }
 
-    void setCastRecyclerView() {
-        List<Cast> mdata = new ArrayList<>();
-        mdata.add(new Cast("name", R.drawable.moana));
-        mdata.add(new Cast("name", R.drawable.moana));
-        mdata.add(new Cast("name", R.drawable.moana));
-        mdata.add(new Cast("name", R.drawable.moana));
-        mdata.add(new Cast("name", R.drawable.moana));
-        mdata.add(new Cast("name", R.drawable.moana));
-        CastAdapter castAdapter = new CastAdapter(this, mdata);
-        castRecyclerView.setAdapter(castAdapter);
-        castRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+    void setCastRecyclerView(long id) {
+        Call<CreditsResponse> callAsync = movieService.getCast(id);
+
+        callAsync.enqueue(new Callback<CreditsResponse>() {
+
+            @Override
+            public void onResponse(Call<CreditsResponse> call, Response<CreditsResponse> response) {
+                if (response.isSuccessful()) {
+                    CreditsResponse apiResponse = response.body();
+                    List<Cast> mdata = apiResponse.getCast();
+                    CastAdapter castAdapter = new CastAdapter(MovieDetailActivity.this, mdata);
+                    castRecyclerView.setAdapter(castAdapter);
+                    castRecyclerView.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+                } else {
+                    Timber.e("Request Error :: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreditsResponse> call, Throwable t) {
+                Timber.e("Network Error :: " + t.getLocalizedMessage());
+            }
+        });
+
     }
 }
