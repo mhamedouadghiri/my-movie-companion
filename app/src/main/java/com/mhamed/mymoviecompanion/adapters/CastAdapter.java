@@ -1,53 +1,51 @@
 package com.mhamed.mymoviecompanion.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.mhamed.mymoviecompanion.R;
+import com.mhamed.mymoviecompanion.databinding.ItemCastBinding;
 import com.mhamed.mymoviecompanion.model.Cast;
 
 import java.util.List;
 
 public class CastAdapter extends RecyclerView.Adapter<CastAdapter.CastViewHolder> {
 
-    Context mContext;
-    List<Cast> mData;
+    private final List<Cast> data;
 
-    public CastAdapter(Context mContext, List<Cast> mData) {
-        this.mContext = mContext;
-        this.mData = mData;
+    public CastAdapter(List<Cast> data) {
+        this.data = data;
     }
 
     @NonNull
     @Override
     public CastViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_cast, parent, false);
-        return new CastViewHolder(view);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        return new CastViewHolder(ItemCastBinding.inflate(layoutInflater, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull CastViewHolder holder, int position) {
-        Glide.with(mContext).load(mData.get(position).getImgLink()).into(holder.img);
+        holder.bindTo(data.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return data.size();
     }
 
-    public static class CastViewHolder extends RecyclerView.ViewHolder {
-        ImageView img;
+    static class CastViewHolder extends RecyclerView.ViewHolder {
+        private final ItemCastBinding binding;
 
-        public CastViewHolder(@NonNull View itemView) {
-            super(itemView);
-            img = itemView.findViewById(R.id.img_cast);
+        public CastViewHolder(@NonNull ItemCastBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public void bindTo(Cast cast) {
+            binding.setCast(cast);
         }
     }
 }

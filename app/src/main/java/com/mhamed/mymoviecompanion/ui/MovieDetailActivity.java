@@ -58,13 +58,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         Call<CreditsResponse> callAsync = movieService.getCast(id);
 
         callAsync.enqueue(new Callback<CreditsResponse>() {
-
             @Override
             public void onResponse(Call<CreditsResponse> call, Response<CreditsResponse> response) {
                 if (response.isSuccessful()) {
                     CreditsResponse apiResponse = response.body();
                     List<Cast> mdata = apiResponse.getCast();
-                    CastAdapter castAdapter = new CastAdapter(MovieDetailActivity.this, mdata);
+                    CastAdapter castAdapter = new CastAdapter(mdata);
                     castRecyclerView.setAdapter(castAdapter);
                     castRecyclerView.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
                 } else {
@@ -77,6 +76,5 @@ public class MovieDetailActivity extends AppCompatActivity {
                 Timber.e("Network Error :: " + t.getLocalizedMessage());
             }
         });
-
     }
 }
