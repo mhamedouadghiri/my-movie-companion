@@ -16,6 +16,9 @@ public class Trailer {
     @SerializedName("name")
     private String title;
 
+    @SerializedName("type")
+    private String type;
+
     public Trailer() {
     }
 
@@ -33,5 +36,13 @@ public class Trailer {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
