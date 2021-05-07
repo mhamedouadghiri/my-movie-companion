@@ -2,8 +2,8 @@ package com.mhamed.mymoviecompanion.model;
 
 public enum MoviesFilterType {
     POPULAR("Popular"),
-    TOP_RATED("Top Rated"),
-    NOW_PLAYING("Now Playing");
+    NOW_PLAYING("Now Playing"),
+    TOP_RATED("Top Rated");
 
     private final String name;
 

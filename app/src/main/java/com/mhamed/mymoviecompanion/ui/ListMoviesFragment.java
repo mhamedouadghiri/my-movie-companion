@@ -33,6 +33,16 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
 
     private View view;
 
+    private Class<? extends BaseViewModel> movieFilterTypeClazz;
+
+    public ListMoviesFragment() {
+        this(PopularMoviesViewModel.class);
+    }
+
+    public ListMoviesFragment(Class<? extends BaseViewModel> movieFilterTypeClazz) {
+        this.movieFilterTypeClazz = movieFilterTypeClazz;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,25 +52,24 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Spinner spinner = view.findViewById(R.id.movies_filter_type_spinner);
-        ArrayAdapter<MoviesFilterType> adapter = new ArrayAdapter<>(requireContext(), R.layout.support_simple_spinner_dropdown_item, MoviesFilterType.values());
+        Spinner spinner = requireActivity().findViewById(R.id.movies_filter_type_spinner);
+        ArrayAdapter<MoviesFilterType> adapter = new ArrayAdapter<>(requireContext(), R.layout.simple_spinner_item, MoviesFilterType.values());
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Class<? extends BaseViewModel> clazz;
                 switch (((MoviesFilterType) parent.getItemAtPosition(position))) {
                     case TOP_RATED:
-                        clazz = TopRatedMoviesViewModel.class;
+                        movieFilterTypeClazz = TopRatedMoviesViewModel.class;
                         break;
                     case NOW_PLAYING:
-                        clazz = NowPlayingMoviesViewModel.class;
+                        movieFilterTypeClazz = NowPlayingMoviesViewModel.class;
                         break;
                     case POPULAR:
                     default:
-                        clazz = PopularMoviesViewModel.class;
+                        movieFilterTypeClazz = PopularMoviesViewModel.class;
                 }
-                initMovies(clazz);
+                initMovies();
             }
 
             @Override
@@ -69,9 +78,9 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
         });
     }
 
-    private void initMovies(Class<? extends BaseViewModel> clazz) {
+    private void initMovies() {
         RecyclerView recyclerView = requireView().findViewById(R.id.list_movies_recyclerview);
-        BaseViewModel viewModel = ViewModelProviders.of(this).get(clazz);
+        BaseViewModel viewModel = ViewModelProviders.of(this).get(movieFilterTypeClazz);
         final MovieAdapter movieAdapter = new MovieAdapter(getContext(), this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         FlexboxLayoutManager layout = new FlexboxLayoutManager(getContext());

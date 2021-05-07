@@ -5,10 +5,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -44,10 +47,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setupToolbar();
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         Movie movie = (Movie) getIntent().getExtras().get("movie");
         binding.setMovie(movie);
+
+        setTitle(movie.getTitle());
 
         castRecyclerView = findViewById(R.id.cast_recycler_view);
 
@@ -74,6 +81,22 @@ public class MovieDetailActivity extends AppCompatActivity {
                 startActivity(webIntent);
             }
         });
+    }
+
+    private void setupToolbar() {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setCastRecyclerView(long id) {
