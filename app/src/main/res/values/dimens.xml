@@ -1,5 +1,11 @@
 <resources>
-    <dimen name="dimens_small">8dp</dimen>
+    <dimen name="dimens_xsmall">8dp</dimen>
+    <dimen name="dimens_small">16dp</dimen>
     <dimen name="dimens_large">125dp</dimen>
     <dimen name="dimens_xlarge">175dp</dimen>
+
+    <dimen name="dimens_poster_width">120dp</dimen>
+    <dimen name="dimens_poster_height">180dp</dimen>
+    <dimen name="dimens_cast_width">120dp</dimen>
+    <dimen name="dimens_cast_height">180dp</dimen>
 </resources>

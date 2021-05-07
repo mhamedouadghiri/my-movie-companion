@@ -25,24 +25,23 @@ public interface MovieService {
 //    Call<Movie> getMovieDetails(@Path("id") long id);
 
     @GET("movie/{id}/credits")
-    Call<CreditsResponse> getCast(@Path("id") long id);
+    Call<CreditsResponse> getCast(@Path("id") Long id);
 
     @GET("movie/{id}/videos")
-    Call<VideosResponse> getVideos(@Path("id") long id);
+    Call<VideosResponse> getVideos(@Path("id") Long id);
 
     @GET("movie/{id}/reviews")
-    Call<ReviewsResponse> getReviews(@Path("id") long id);
+    Call<ReviewsResponse> getReviews(@Path("id") Long id);
 
-    @GET("/discover/movie")
-    Call<MoviesResponse> SearchMovies(@Query("page") int page,
-                                      @Query("sort_by") String sort_by,
-                                      @Query("with_genres") String genres,
-                                      @Query("release_date.gte") String release_date_gte,
-                                      @Query("release_date.lte") String release_date_lte,
-                                      @Query("year") String year
+    @GET("discover/movie")
+    Call<MoviesResponse> discoverMoviesWithFilters(@Query("page") int page,
+                                                   @Query("sort_by") String sort_by,
+                                                   @Query("with_genres") String genres,
+                                                   @Query("release_date.gte") String release_date_gte,
+                                                   @Query("release_date.lte") String release_date_lte,
+                                                   @Query("year") String year
     );
 
-    @GET("/search/movie")
-    Call<MoviesResponse> getMovieByTitle(@Query("query") String title
-    );
+    @GET("search/movie")
+    Call<MoviesResponse> searchMoviesByTitle(@Query("query") String title);
 }

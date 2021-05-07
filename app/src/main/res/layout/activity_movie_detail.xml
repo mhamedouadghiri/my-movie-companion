@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.mhamed.mymoviecompanion.model.ImageSizeType" />
+
         <variable
             name="movie"
             type="com.mhamed.mymoviecompanion.model.Movie" />
@@ -41,11 +43,13 @@
 
                 <ImageView
                     android:id="@+id/detail_movie_cover"
-                    android:layout_width="match_parent"
-                    android:layout_height="245dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:contentDescription="@string/movie_backdrop"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{movie.backdropPath}"
+                    app:imagePath="@{movie.backdropPath}"
+                    app:imageSizeType="@{ImageSizeType.BACKDROP}"
+                    app:layout_constraintDimensionRatio="780:439"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -75,13 +79,14 @@
 
                 <ImageView
                     android:id="@+id/detail_movie_img"
-                    android:layout_width="125dp"
-                    android:layout_height="175dp"
-                    android:layout_marginStart="16dp"
+                    android:layout_width="@dimen/dimens_poster_width"
+                    android:layout_height="@dimen/dimens_poster_height"
+                    android:layout_marginStart="@dimen/dimens_small"
                     android:contentDescription="@string/movie_poster"
                     android:scaleType="centerCrop"
                     android:transitionName="sharedName"
-                    app:imageUrl="@{movie.posterPath}"
+                    app:imagePath="@{movie.posterPath}"
+                    app:imageSizeType="@{ImageSizeType.POSTER}"
                     app:layout_constraintBottom_toBottomOf="@+id/detail_movie_cover"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/detail_movie_cover" />
@@ -132,11 +137,9 @@
                     app:layout_constraintVertical_bias="0.0" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_cast"
+                    android:id="@+id/cast_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />
