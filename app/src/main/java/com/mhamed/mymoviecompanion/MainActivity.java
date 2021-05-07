@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -13,11 +14,18 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
+import com.mhamed.mymoviecompanion.model.MoviesResponse;
+import com.mhamed.mymoviecompanion.remote.api.ApiClient;
+import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
+import com.mhamed.mymoviecompanion.util.SimpleCallback;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    NavigationView navigationView;
+    private static final String TAG = "MAIN_ACTIVITY";
+    private final MovieService movieService = ApiClient.getInstance();
+
+    private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
 
@@ -34,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         if (savedInstanceState == null) {
-            //default movie categorie
+            //default movie category
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListMoviesFragment()).commit();
         }
     }
@@ -44,17 +52,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.menubar, menu);
         MenuItem menuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) menuItem.getActionView();
-        searchView.setQueryHint("Search by title");
+        searchView.setQueryHint(getString(R.string.search_movies));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.i("press Enter", query);
+                movieService.searchMoviesByTitle(query).enqueue((SimpleCallback<MoviesResponse>) (call, response) -> {
+                    if (response.isSuccessful() && response.body() != null) {
+                        response.body().getMovies().forEach(movie -> Log.i(TAG, movie.getTitle()));
+                    } else {
+                        Toast.makeText(getApplicationContext(), "An error has occurred", Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Error on successful query submit.");
+                    }
+                });
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Log.i("changing", newText);
                 return true;
             }
         });
