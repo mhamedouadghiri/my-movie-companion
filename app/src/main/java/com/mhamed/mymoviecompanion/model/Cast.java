@@ -24,15 +24,7 @@ public class Cast {
     @SerializedName("profile_path")
     private String profileImagePath;
 
-    // TODO: remove this
-    private int imgLink;
-
     public Cast() {
-    }
-
-    public Cast(String name, int imgLink) {
-        this.name = name;
-        this.imgLink = imgLink;
     }
 
     public Long getId() {
@@ -89,13 +81,5 @@ public class Cast {
 
     public void setProfileImagePath(String profileImagePath) {
         this.profileImagePath = profileImagePath;
-    }
-
-    public int getImgLink() {
-        return imgLink;
-    }
-
-    public void setImgLink(int imgLink) {
-        this.imgLink = imgLink;
     }
 }

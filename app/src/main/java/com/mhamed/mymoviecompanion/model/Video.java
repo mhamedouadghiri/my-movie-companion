@@ -2,7 +2,7 @@ package com.mhamed.mymoviecompanion.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Trailer {
+public class Video {
 
     @SerializedName("id")
     private String id;
@@ -19,7 +19,7 @@ public class Trailer {
     @SerializedName("type")
     private String type;
 
-    public Trailer() {
+    public Video() {
     }
 
     public String getId() {
@@ -42,7 +42,8 @@ public class Trailer {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public boolean isValidYoutubeTrailer() {
+        return type != null && site != null && key != null &&
+                type.equals("Trailer") && site.equals("YouTube") && !key.isEmpty();
     }
 }

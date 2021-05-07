@@ -21,8 +21,8 @@ import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
 import com.mhamed.mymoviecompanion.model.Cast;
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
 import com.mhamed.mymoviecompanion.model.Movie;
-import com.mhamed.mymoviecompanion.model.Trailer;
-import com.mhamed.mymoviecompanion.model.TrailersResponse;
+import com.mhamed.mymoviecompanion.model.Video;
+import com.mhamed.mymoviecompanion.model.VideosResponse;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.util.Constants;
@@ -38,7 +38,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     private ActivityMovieDetailBinding binding;
 
     private RecyclerView castRecyclerView;
-    private Trailer trailer;
+    private Video video;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +58,16 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
         setCastRecyclerView(movie.getId());
-        setTrailer(movie.getId());
+        setVideo(movie.getId());
 
         playFAB.setOnClickListener(v -> {
-            if (trailer.getKey() == null || trailer.getKey().isEmpty()) {
+            if (!video.isValidYoutubeTrailer()) {
                 Log.i(TAG, "Trailer key (url) is not set.");
                 Toast.makeText(getApplicationContext(), "Trailer not available at the moment.", Toast.LENGTH_LONG).show();
                 return;
             }
-            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + trailer.getKey()));
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_URL + trailer.getKey()));
+            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + video.getKey()));
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Constants.YOUTUBE_URL + video.getKey()));
             try {
                 startActivity(appIntent);
             } catch (ActivityNotFoundException ex) {
@@ -90,15 +90,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void setTrailer(Long id) {
-        movieService.getVideos(id).enqueue((SimpleCallback<TrailersResponse>) (call, response) -> {
+    private void setVideo(Long id) {
+        movieService.getVideos(id).enqueue((SimpleCallback<VideosResponse>) (call, response) -> {
             if (response.isSuccessful() && response.body() != null) {
-                trailer = response.body().getTrailers()
-                        .stream()
-                        .filter(t -> t.getType().equals("Trailer"))
-                        .filter(t -> t.getSite().equals("YouTube"))
-                        .findFirst()
-                        .orElse(null);
+                video = response.body().getFirstYoutubeTrailer();
             } else {
                 Log.e(TAG, response.errorBody().toString());
             }

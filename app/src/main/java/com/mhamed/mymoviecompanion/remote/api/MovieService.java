@@ -3,7 +3,7 @@ package com.mhamed.mymoviecompanion.remote.api;
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
 import com.mhamed.mymoviecompanion.model.MoviesResponse;
 import com.mhamed.mymoviecompanion.model.ReviewsResponse;
-import com.mhamed.mymoviecompanion.model.TrailersResponse;
+import com.mhamed.mymoviecompanion.model.VideosResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -28,7 +28,7 @@ public interface MovieService {
     Call<CreditsResponse> getCast(@Path("id") long id);
 
     @GET("movie/{id}/videos")
-    Call<TrailersResponse> getVideos(@Path("id") long id);
+    Call<VideosResponse> getVideos(@Path("id") long id);
 
     @GET("movie/{id}/reviews")
     Call<ReviewsResponse> getReviews(@Path("id") long id);
