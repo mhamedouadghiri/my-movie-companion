@@ -47,7 +47,7 @@ public class Movie implements Serializable {
     private Genre[] genres;
 
     @SerializedName("videos")
-    private TrailersResponse trailersResponse;
+    private VideosResponse videosResponse;
 
     @SerializedName("credits")
     private CreditsResponse creditsResponse;
@@ -186,12 +186,12 @@ public class Movie implements Serializable {
         this.genres = genres;
     }
 
-    public TrailersResponse getTrailersResponse() {
-        return trailersResponse;
+    public VideosResponse getVideosResponse() {
+        return videosResponse;
     }
 
-    public void setTrailersResponse(TrailersResponse trailersResponse) {
-        this.trailersResponse = trailersResponse;
+    public void setVideosResponse(VideosResponse videosResponse) {
+        this.videosResponse = videosResponse;
     }
 
     public CreditsResponse getCreditsResponse() {

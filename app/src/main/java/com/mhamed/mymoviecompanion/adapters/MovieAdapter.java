@@ -111,7 +111,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
 
         public void bindTo(Movie movie) {
             binding.setMovie(movie);
-            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(movie, itemView.findViewById(R.id.item_movie_img)));
+            itemView.setOnClickListener(v -> movieItemClickListener.onMovieClick(movie, itemView.findViewById(R.id.movie_poster)));
         }
     }
 }

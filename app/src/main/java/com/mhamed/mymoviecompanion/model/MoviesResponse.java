@@ -13,7 +13,7 @@ public class MoviesResponse {
     private int totalResults = 0;
 
     @SerializedName("total_pages")
-    private int  totalPages = 0;
+    private int totalPages = 0;
 
     @SerializedName("results")
     private List<Movie> movies;

@@ -1,10 +1,9 @@
 package com.mhamed.mymoviecompanion.remote.api;
 
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
-import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.MoviesResponse;
 import com.mhamed.mymoviecompanion.model.ReviewsResponse;
-import com.mhamed.mymoviecompanion.model.TrailersResponse;
+import com.mhamed.mymoviecompanion.model.VideosResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -22,17 +21,14 @@ public interface MovieService {
     @GET("movie/now_playing")
     Call<MoviesResponse> getNowPlayingMovies(@Query("page") int page);
 
-    // Instead of using 4 separate requests we use append_to_response
-    // to eliminate duplicate requests and save network bandwidth
-    // this request return full movie details, trailers, reviews and cast::
-    @GET("movie/{id}?append_to_response=videos,credits,reviews")
-    Call<Movie> getMovieDetails(@Path("id") long id);
+//    @GET("movie/{id}?append_to_response=videos,credits,reviews")
+//    Call<Movie> getMovieDetails(@Path("id") long id);
 
     @GET("movie/{id}/credits")
     Call<CreditsResponse> getCast(@Path("id") long id);
 
     @GET("movie/{id}/videos")
-    Call<TrailersResponse> getVideos(@Path("id") long id);
+    Call<VideosResponse> getVideos(@Path("id") long id);
 
     @GET("movie/{id}/reviews")
     Call<ReviewsResponse> getReviews(@Path("id") long id);
@@ -49,5 +45,4 @@ public interface MovieService {
     @GET("/search/movie")
     Call<MoviesResponse> getMovieByTitle(@Query("query") String title
     );
-
 }
