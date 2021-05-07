@@ -49,7 +49,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         Movie movie = (Movie) getIntent().getExtras().get("movie");
         binding.setMovie(movie);
 
-        castRecyclerView = findViewById(R.id.rv_cast);
+        castRecyclerView = findViewById(R.id.cast_recycler_view);
 
         FloatingActionButton playFAB = findViewById(R.id.play_fab);
         playFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
