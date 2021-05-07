@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,15 +23,15 @@ import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
 import com.mhamed.mymoviecompanion.adapters.MovieItemClickListener;
 import com.mhamed.mymoviecompanion.model.Movie;
+import com.mhamed.mymoviecompanion.model.MoviesFilterType;
 import com.mhamed.mymoviecompanion.viewmodel.BaseViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.NowPlayingMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.TopRatedMoviesViewModel;
 
 public class ListMoviesFragment extends Fragment implements MovieItemClickListener {
 
     private View view;
-//    private List<Slide> slides;
-//    private ViewPager sliderPager;
-//    private TabLayout indicator;
 
     @Nullable
     @Override
@@ -39,15 +42,35 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        sliderPager = requireView().findViewById(R.id.slider_pager);
-//        indicator = requireView().findViewById(R.id.indicator);
-//        initSlider();
-        initMovies(R.id.list_movies_recyclerview, PopularMoviesViewModel.class);
-//        initMovies(R.id.now_playing_movies_recyvlerview, NowPlayingMoviesViewModel.class);
+        Spinner spinner = view.findViewById(R.id.movies_filter_type_spinner);
+        ArrayAdapter<MoviesFilterType> adapter = new ArrayAdapter<>(requireContext(), R.layout.support_simple_spinner_dropdown_item, MoviesFilterType.values());
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Class<? extends BaseViewModel> clazz;
+                switch (((MoviesFilterType) parent.getItemAtPosition(position))) {
+                    case TOP_RATED:
+                        clazz = TopRatedMoviesViewModel.class;
+                        break;
+                    case NOW_PLAYING:
+                        clazz = NowPlayingMoviesViewModel.class;
+                        break;
+                    case POPULAR:
+                    default:
+                        clazz = PopularMoviesViewModel.class;
+                }
+                initMovies(clazz);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
-    private void initMovies(int recyclerViewId, Class<? extends BaseViewModel> clazz) {
-        RecyclerView recyclerView = requireView().findViewById(recyclerViewId);
+    private void initMovies(Class<? extends BaseViewModel> clazz) {
+        RecyclerView recyclerView = requireView().findViewById(R.id.list_movies_recyclerview);
         BaseViewModel viewModel = ViewModelProviders.of(this).get(clazz);
         final MovieAdapter movieAdapter = new MovieAdapter(getContext(), this, viewModel);
         recyclerView.setAdapter(movieAdapter);
@@ -58,44 +81,11 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
         viewModel.getNetworkState().observe(getViewLifecycleOwner(), movieAdapter::setNetworkState);
     }
 
-//    private void initSlider() {
-//        slides = new ArrayList<>();
-//        slides.add(new Slide(R.drawable.slide1, "Slide Title"));
-//        slides.add(new Slide(R.drawable.slide2, "Slide Title"));
-//        slides.add(new Slide(R.drawable.slide1, "Slide Title"));
-//        slides.add(new Slide(R.drawable.slide2, "Slide Title"));
-//        SliderPagerAdapter adapter = new SliderPagerAdapter(getContext(), slides);
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new ListMoviesFragment.SliderTimer(), 4000, 6000);
-//        sliderPager.setAdapter(adapter);
-//        indicator.setupWithViewPager(sliderPager, true);
-//    }
-
     @Override
     public void onMovieClick(Movie movie, ImageView movieImageView) {
-        // here we send movie information to detail activity
-        // and we create the transition animation between the two activities
-
         Intent intent = new Intent(getContext(), MovieDetailActivity.class);
         intent.putExtra("movie", movie);
-
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(getActivity(), movieImageView, "sharedName");
         startActivity(intent, options.toBundle());
     }
-
-//    class SliderTimer extends TimerTask {
-//        @Override
-//        public void run() {
-//            if (getActivity() == null) {
-//                return;
-//            }
-//            getActivity().runOnUiThread(() -> {
-//                if (sliderPager.getCurrentItem() < slides.size() - 1) {
-//                    sliderPager.setCurrentItem(sliderPager.getCurrentItem() + 1);
-//                } else {
-//                    sliderPager.setCurrentItem(0);
-//                }
-//            });
-//        }
-//    }
 }
