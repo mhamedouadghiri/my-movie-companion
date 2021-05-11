@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/Navheader"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:orientation="vertical"
     android:background="@drawable/navheader"
-    android:id="@+id/Navheader"
+    android:orientation="vertical"
     android:padding="20dp">
 
     <ImageView
         android:layout_width="75dp"
         android:layout_height="75dp"
+        android:contentDescription="@string/user_picture"
         android:src="@drawable/user" />
 
     <TextView
+        android:id="@+id/Navusername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:text="Moufakkir"
         android:textColor="@color/colorWhite"
-        android:id="@+id/Navusername"
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/Navemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email@gmail.com"
-        android:id="@+id/Navemail"
         android:textColor="@color/colorWhite" />
 
 </LinearLayout>

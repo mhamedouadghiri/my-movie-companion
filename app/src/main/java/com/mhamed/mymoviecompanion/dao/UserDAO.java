@@ -1,16 +1,17 @@
-package com.mhamed.mymoviecompanion.DAO;
+package com.mhamed.mymoviecompanion.dao;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.mhamed.mymoviecompanion.Entity.User;
+import com.mhamed.mymoviecompanion.entity.User;
 
 import java.util.List;
 
-
 @Dao
 public interface UserDAO {
+
     @Insert
     void insertUser(User user);
 
@@ -20,5 +21,4 @@ public interface UserDAO {
 
     @Query("SELECT * from User")
     LiveData<List<User>> getAllUser();
-
 }

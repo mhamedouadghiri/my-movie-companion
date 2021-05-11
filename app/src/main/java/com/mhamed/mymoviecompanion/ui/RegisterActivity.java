@@ -1,7 +1,5 @@
 package com.mhamed.mymoviecompanion.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,9 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.mhamed.mymoviecompanion.Entity.User;
-import com.mhamed.mymoviecompanion.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.mhamed.mymoviecompanion.R;
+import com.mhamed.mymoviecompanion.entity.User;
 import com.mhamed.mymoviecompanion.viewmodel.UserViewModel;
 
 
@@ -23,50 +23,41 @@ public class RegisterActivity extends AppCompatActivity {
     private UserViewModel userViewModel;
     private Button register;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         getSupportActionBar().hide();
         TextView tvLogin = findViewById(R.id.tvLogin);
-        tvLogin.setOnClickListener(onLoginListner());
+        tvLogin.setOnClickListener(onLoginListener());
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.init(this.getApplication());
-        email=findViewById(R.id.email);
+        email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         username = findViewById(R.id.username);
         register = findViewById(R.id.register);
-        register.setOnClickListener(onRegisterListner());
+        register.setOnClickListener(onRegisterListener());
     }
 
-    private View.OnClickListener onLoginListner(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RegisterActivity.this,LoginActivity.class);
+    private View.OnClickListener onLoginListener() {
+        return view -> {
+            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+            RegisterActivity.this.startActivity(intent);
+        };
+    }
+
+    private View.OnClickListener onRegisterListener() {
+        return view -> {
+            if (confirmInput()) {
+                final User user = new User();
+                user.setEmail(email.getText().toString());
+                user.setPassword(password.getText().toString());
+                user.setUsername(username.getText().toString());
+                userViewModel.insertUser(user);
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 RegisterActivity.this.startActivity(intent);
             }
         };
-    }
-
-    private View.OnClickListener onRegisterListner(){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(confirmInput()){
-                    final User user = new User();
-                    user.setEmail(email.getText().toString());
-                    user.setPassword(password.getText().toString());
-                    user.setUsername(username.getText().toString());
-                    userViewModel.insertUser(user);
-                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                    RegisterActivity.this.startActivity(intent);
-                }
-            };
-        };
-
     }
 
     private boolean validateEmail() {
@@ -79,6 +70,7 @@ public class RegisterActivity extends AppCompatActivity {
             return true;
         }
     }
+
     private boolean validateUsername() {
         String usernameInput = username.getText().toString().trim();
         if (usernameInput.isEmpty()) {
@@ -92,6 +84,7 @@ public class RegisterActivity extends AppCompatActivity {
             return true;
         }
     }
+
     private boolean validatePassword() {
         String passwordInput = password.getText().toString().trim();
         if (passwordInput.isEmpty()) {
@@ -104,11 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public boolean confirmInput() {
-        if (!validateEmail() | !validateUsername() | !validatePassword()) {
-            return false;
-        }
-        return true;
+        return validateEmail() && !(!validateUsername() | !validatePassword());
     }
-
-
 }

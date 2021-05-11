@@ -1,24 +1,27 @@
-package com.mhamed.mymoviecompanion.Entity;
+package com.mhamed.mymoviecompanion.entity;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
 
-
 @Entity
 public class User implements Serializable {
+
     @PrimaryKey(autoGenerate = true)
-    private int id_user;
+    private Long id;
+
     @ColumnInfo(name = "username")
     private String username;
+
     @ColumnInfo(name = "email")
     private String email;
+
     @ColumnInfo(name = "password")
     private String password;
 
     public User() {
-
     }
 
     public User(String username, String email, String password) {
@@ -27,12 +30,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public int getId_user() {
-        return id_user;
+    public Long getId() {
+        return id;
     }
 
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -59,4 +62,3 @@ public class User implements Serializable {
         this.password = password;
     }
 }
-

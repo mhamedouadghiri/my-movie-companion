@@ -1,4 +1,5 @@
 package com.mhamed.mymoviecompanion;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,14 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-import com.mhamed.mymoviecompanion.viewmodel.FilmsVusViewModel;
-
-public class Custom_dialog extends AppCompatDialogFragment  {
-    Custom_DialogInterface dialogInterface;
+public class CustomDialog extends AppCompatDialogFragment {
+    CustomDialogInterface dialogInterface;
     EditText critique;
     NumberPicker numberPicker;
 
@@ -24,7 +24,7 @@ public class Custom_dialog extends AppCompatDialogFragment  {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_dialog,null);
+        View view = inflater.inflate(R.layout.layout_dialog, null);
         builder.setView(view)
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -35,9 +35,9 @@ public class Custom_dialog extends AppCompatDialogFragment  {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                         String cr = critique.getText().toString();
-                         int n = numberPicker.getValue();
-                         dialogInterface.applyTexts(cr,n);
+                        String cr = critique.getText().toString();
+                        int n = numberPicker.getValue();
+                        dialogInterface.applyTexts(cr, n);
                     }
                 });
 
@@ -52,12 +52,12 @@ public class Custom_dialog extends AppCompatDialogFragment  {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        dialogInterface= (Custom_DialogInterface) context;
+        dialogInterface = (CustomDialogInterface) context;
 
     }
 
-    public interface Custom_DialogInterface{
-        void applyTexts(String critique , int note);
+    public interface CustomDialogInterface {
+        void applyTexts(String critique, int note);
 
     }
 }

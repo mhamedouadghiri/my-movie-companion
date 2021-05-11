@@ -1,13 +1,8 @@
 package com.mhamed.mymoviecompanion;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.text.Layout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -17,7 +12,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
-import com.mhamed.mymoviecompanion.Entity.User;
+import com.mhamed.mymoviecompanion.entity.User;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
@@ -31,8 +26,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private User user;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

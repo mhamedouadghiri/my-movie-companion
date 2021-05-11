@@ -62,27 +62,19 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.5'
+    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
+    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.7'
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
-//    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-//    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
-//    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
-//    kapt "androidx.lifecycle:lifecycle-compiler:2.3.1"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
-
     def lifecycle_version = "2.3.1"
-    // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
-    // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 
-    //room
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
