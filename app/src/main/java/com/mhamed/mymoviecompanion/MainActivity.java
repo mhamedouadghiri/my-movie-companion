@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private User user;
-   
+
 
 
     @Override

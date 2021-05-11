@@ -14,7 +14,7 @@ import com.mhamed.mymoviecompanion.Entity.FilmsVus;
 import com.mhamed.mymoviecompanion.Entity.User;
 
 
-@Database(entities = {User.class, FilmsEnvies.class, FilmsVus.class}, version = 2,exportSchema = false)
+@Database(entities = {User.class, FilmsEnvies.class, FilmsVus.class}, version = 3,exportSchema = false)
     public abstract class ConfigDatabase  extends RoomDatabase {
 
         // --- SINGLETON ---

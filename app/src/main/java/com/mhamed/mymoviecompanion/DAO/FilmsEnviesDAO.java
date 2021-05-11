@@ -13,6 +13,6 @@ public interface FilmsEnviesDAO {
    @Insert
    void insertFilmsEnvies(FilmsEnvies filmsEnvies);
 
-   @Query("SELECT * From FilmsEnvies where id_fkuser=(:id_user) ")
+   @Query("SELECT * From FilmsEnvies where id_user=(:id_user) ")
    LiveData<List<FilmsEnvies>> getAllFilmsEnviesUser(int id_user);
 }

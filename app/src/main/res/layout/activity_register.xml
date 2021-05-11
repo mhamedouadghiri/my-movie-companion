@@ -177,27 +177,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/idLogin">
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorPrimary" />
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_weight="3"-->
+<!--            android:background="@color/colorPrimary" />-->
 
-        <TextView
-            style="@style/viewParent.headerText.NoMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="OR"
-            android:textAlignment="center"
-            android:textColor="@color/colorViolet"
-            android:textSize="12sp" />
+<!--        <TextView-->
+<!--            style="@style/viewParent.headerText.NoMode"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="1"-->
+<!--            android:text="OR"-->
+<!--            android:textAlignment="center"-->
+<!--            android:textColor="@color/colorViolet"-->
+<!--            android:textSize="12sp" />-->
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_weight="3"
-            android:background="@color/colorPrimary" />
+<!--        <View-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="1dp"-->
+<!--            android:layout_weight="3"-->
+<!--            android:background="@color/colorPrimary" />-->
     </LinearLayout>
 
 

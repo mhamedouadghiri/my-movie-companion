@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
                     user.setPassword(password.getText().toString());
                     user.setUsername(username.getText().toString());
                     userViewModel.insertUser(user);
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                     RegisterActivity.this.startActivity(intent);
                 }
             };
