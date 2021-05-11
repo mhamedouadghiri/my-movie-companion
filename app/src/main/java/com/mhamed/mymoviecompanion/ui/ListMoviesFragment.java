@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.flexbox.FlexboxLayoutManager;
@@ -80,7 +80,7 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
 
     private void initMovies() {
         RecyclerView recyclerView = requireView().findViewById(R.id.list_movies_recyclerview);
-        BaseViewModel viewModel = ViewModelProviders.of(this).get(movieFilterTypeClazz);
+        BaseViewModel viewModel = new ViewModelProvider(this).get(movieFilterTypeClazz);
         final MovieAdapter movieAdapter = new MovieAdapter(getContext(), this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         FlexboxLayoutManager layout = new FlexboxLayoutManager(getContext());

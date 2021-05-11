@@ -6,18 +6,24 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mhamed.mymoviecompanion.Custom_dialog;
+import com.mhamed.mymoviecompanion.Entity.FilmsVus;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.CastAdapter;
 import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
@@ -30,10 +36,12 @@ import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
+import com.mhamed.mymoviecompanion.viewmodel.FilmsVusViewModel;
 
 import java.util.List;
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends AppCompatActivity implements Custom_dialog.Custom_DialogInterface {
+
 
     private static final String TAG = "MOVIE_DETAIL_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
@@ -42,6 +50,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private RecyclerView castRecyclerView;
     private Video video;
+    private Button share ;
+    private FilmsVusViewModel filmsVusViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +68,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         castRecyclerView = findViewById(R.id.cast_recycler_view);
 
+        filmsVusViewModel = new ViewModelProvider(this).get(FilmsVusViewModel.class);
+        filmsVusViewModel.init(this.getApplication());
+
         FloatingActionButton playFAB = findViewById(R.id.play_fab);
         playFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
@@ -66,6 +79,15 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         setCastRecyclerView(movie.getId());
         setVideo(movie.getId());
+
+        share = findViewById(R.id.share);
+        share.setOnClickListener((v -> {
+            Intent SharingFilm = new Intent(Intent.ACTION_SEND);
+            SharingFilm.setType("text/plain");
+            SharingFilm.putExtra(Intent.EXTRA_SUBJECT,"SUBJECT");
+            SharingFilm.putExtra(Intent.EXTRA_TEXT,Constants.YOUTUBE_URL + video.getKey());
+            startActivity(Intent.createChooser(SharingFilm,"SHARING"));
+        }));
 
         playFAB.setOnClickListener(v -> {
             if (!video.isValidYoutubeTrailer()) {
@@ -122,4 +144,18 @@ public class MovieDetailActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void openDialog(View view){
+        Custom_dialog custom_dialog = new Custom_dialog();
+        custom_dialog.show(getSupportFragmentManager(),"Test CustomerDialog");
+    }
+
+    @Override
+    public void applyTexts(String critique, int note) {
+        Log.i("Note",String.valueOf(note));
+        //Insertion de FilmsVus
+        //filmsVusViewModel.insertFilmsVus(new FilmsVus(1,video.getId(),note,critique));
+    }
+
+
 }
