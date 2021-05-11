@@ -70,7 +70,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         FloatingActionButton playFAB = findViewById(R.id.play_fab);
         playFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
-        ImageView movieCoverImg = findViewById(R.id.detail_movie_cover);
+        ImageView movieCoverImg = findViewById(R.id.movie_backdrop_image_view);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
         setCastRecyclerView(movie.getId());

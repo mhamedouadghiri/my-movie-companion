@@ -3,9 +3,11 @@ package com.mhamed.mymoviecompanion.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class Movie implements Serializable {
@@ -103,6 +105,10 @@ public class Movie implements Serializable {
 
     public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getReleaseDateFormatted() {
+        return new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(releaseDate);
     }
 
     public int getReleaseYear() {
