@@ -29,9 +29,11 @@ import com.mhamed.mymoviecompanion.model.VideosResponse;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.util.Constants;
+import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -52,6 +54,13 @@ public class MovieDetailActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         Movie movie = (Movie) getIntent().getExtras().get("movie");
+        movie.setGenres(
+                GenreUtil.getGenresFromAssets(this)
+                        .stream()
+                        .filter(genre -> movie.getGenreIds().contains(genre.getId()))
+                        .collect(Collectors.toList())
+        );
+
         binding.setMovie(movie);
 
         setTitle(movie.getTitle());
@@ -61,7 +70,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         FloatingActionButton playFAB = findViewById(R.id.play_fab);
         playFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
-        ImageView movieCoverImg = findViewById(R.id.detail_movie_cover);
+        ImageView movieCoverImg = findViewById(R.id.movie_backdrop_image_view);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
         setCastRecyclerView(movie.getId());

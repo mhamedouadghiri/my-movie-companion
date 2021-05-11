@@ -1,6 +1,7 @@
 <resources>
     <dimen name="dimens_xsmall">8dp</dimen>
     <dimen name="dimens_small">16dp</dimen>
+    <dimen name="dimens_medium">24dp</dimen>
     <dimen name="dimens_large">125dp</dimen>
     <dimen name="dimens_xlarge">175dp</dimen>
 
