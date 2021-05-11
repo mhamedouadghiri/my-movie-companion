@@ -12,24 +12,8 @@
             type="com.mhamed.mymoviecompanion.model.Movie" />
     </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
-        android:id="@+id/drawer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-        tools:context=".ui.MovieDetailActivity"
-        tools:openDrawer="start">
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@color/colorWhite"
-            app:headerLayout="@layout/header"
-            app:itemIconTint="@color/colorGreenLight"
-            app:itemTextColor="@color/colorAccent"
-            app:menu="@menu/movie_menu" />
+
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -53,6 +37,21 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <ToggleButton
+                    android:id="@+id/share"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginStart="32dp"
+                    android:background="@drawable/ic_baseline_share_24"
+                    android:onClick="openDialog"
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/detail_movie_cover"
+                    tools:ignore="MissingConstraints"></ToggleButton>
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/play_fab"
@@ -275,7 +274,23 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_cast" />
+
+                <ToggleButton
+                    android:id="@+id/favoris"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="10dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="60dp"
+                    android:background="@drawable/ic_baseline_notes_24"
+                    android:onClick="openDialog"
+                    android:textOff=""
+                    android:textOn=""
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.064"
+                    app:layout_constraintStart_toEndOf="@+id/detail_movie_img"
+                    app:layout_constraintTop_toBottomOf="@+id/detail_movie_title"
+                    tools:ignore="MissingConstraints" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
-    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
