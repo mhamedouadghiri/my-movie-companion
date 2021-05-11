@@ -21,6 +21,10 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="cast_image">Profile image of cast member</string>
     <string name="search_movies">Search movies…</string>
+    <string name="label_votes">%s votes</string>
+    <string name="language">Language</string>
+    <string name="release_date">Release date</string>
+    <string name="overview">Overview</string>
     <string name="logo">logo</string>
     <string name="email">Email</string>
     <string name="password">Password</string>

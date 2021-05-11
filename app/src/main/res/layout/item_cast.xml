@@ -34,6 +34,6 @@
             android:layout_gravity="center"
             android:text="@{cast.name}"
             android:textAlignment="center"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorText" />
     </LinearLayout>
 </layout>

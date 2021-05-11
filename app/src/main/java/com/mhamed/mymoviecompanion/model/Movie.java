@@ -3,6 +3,12 @@ package com.mhamed.mymoviecompanion.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class Movie implements Serializable {
 
@@ -18,7 +24,7 @@ public class Movie implements Serializable {
     private String backdropPath;
 
     @SerializedName(value = "release_date")
-    private String releaseDate;
+    private Date releaseDate;
 
     private String status;
 
@@ -44,7 +50,10 @@ public class Movie implements Serializable {
 
     private String homepage;
 
-    private Genre[] genres;
+    @SerializedName("genre_ids")
+    private List<Long> genreIds;
+
+    private List<Genre> genres;
 
     @SerializedName("videos")
     private VideosResponse videosResponse;
@@ -90,12 +99,22 @@ public class Movie implements Serializable {
         this.backdropPath = backdropPath;
     }
 
-    public String getReleaseDate() {
+    public Date getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(String releaseDate) {
+    public void setReleaseDate(Date releaseDate) {
         this.releaseDate = releaseDate;
+    }
+
+    public String getReleaseDateFormatted() {
+        return new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(releaseDate);
+    }
+
+    public int getReleaseYear() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(releaseDate);
+        return calendar.get(Calendar.YEAR);
     }
 
     public String getStatus() {
@@ -178,12 +197,26 @@ public class Movie implements Serializable {
         this.homepage = homepage;
     }
 
-    public Genre[] getGenres() {
+    public List<Long> getGenreIds() {
+        return genreIds;
+    }
+
+    public void setGenreIds(List<Long> genreIds) {
+        this.genreIds = genreIds;
+    }
+
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(Genre[] genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
+    }
+
+    public List<String> getGenreNames() {
+        return genres.stream()
+                .map(Genre::getName)
+                .collect(Collectors.toList());
     }
 
     public VideosResponse getVideosResponse() {
