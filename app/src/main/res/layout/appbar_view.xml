@@ -10,7 +10,12 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-    <SearchView
+    <ImageButton
+        android:id="@+id/mock_search"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/search_movies"
+        android:src="@drawable/ic_baseline_search_24"
+        android:tint="@color/colorWhite" />
 </LinearLayout>

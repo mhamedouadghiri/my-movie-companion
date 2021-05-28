@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
@@ -24,7 +25,7 @@ import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
 import com.mhamed.mymoviecompanion.adapters.MovieItemClickListener;
 import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.MoviesFilterType;
-import com.mhamed.mymoviecompanion.viewmodel.BaseViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.MovieViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.NowPlayingMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.PopularMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.TopRatedMoviesViewModel;
@@ -33,13 +34,13 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
 
     private View view;
 
-    private Class<? extends BaseViewModel> movieFilterTypeClazz;
+    private Class<? extends MovieViewModel> movieFilterTypeClazz;
 
     public ListMoviesFragment() {
         this(PopularMoviesViewModel.class);
     }
 
-    public ListMoviesFragment(Class<? extends BaseViewModel> movieFilterTypeClazz) {
+    public ListMoviesFragment(Class<? extends MovieViewModel> movieFilterTypeClazz) {
         this.movieFilterTypeClazz = movieFilterTypeClazz;
     }
 
@@ -76,11 +77,17 @@ public class ListMoviesFragment extends Fragment implements MovieItemClickListen
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        ImageButton imageButton = requireActivity().findViewById(R.id.mock_search);
+        imageButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void initMovies() {
         RecyclerView recyclerView = requireView().findViewById(R.id.list_movies_recyclerview);
-        BaseViewModel viewModel = new ViewModelProvider(this).get(movieFilterTypeClazz);
+        MovieViewModel viewModel = new ViewModelProvider(this).get(movieFilterTypeClazz);
         final MovieAdapter movieAdapter = new MovieAdapter(getContext(), this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         FlexboxLayoutManager layout = new FlexboxLayoutManager(getContext());

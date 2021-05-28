@@ -187,7 +187,7 @@
                 android:layout_marginTop="@dimen/dimens_small"
                 android:drawablePadding="@dimen/dimens_xsmall"
                 android:gravity="center"
-                android:text="@{movie.releaseDateFormatted}"
+                android:text="@{movie.releaseDateFormatted ?? @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorText"
                 app:drawableStartCompat="@drawable/ic_av_timer_white_24dp"
