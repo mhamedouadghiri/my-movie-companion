@@ -1,6 +1,8 @@
 package com.mhamed.mymoviecompanion.model;
 
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
+import com.mhamed.mymoviecompanion.util.DateTypeAdapter;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -24,6 +26,7 @@ public class Movie implements Serializable {
     private String backdropPath;
 
     @SerializedName(value = "release_date")
+    @JsonAdapter(DateTypeAdapter.class)
     private Date releaseDate;
 
     private String status;
@@ -108,7 +111,7 @@ public class Movie implements Serializable {
     }
 
     public String getReleaseDateFormatted() {
-        return new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(releaseDate);
+        return releaseDate != null ? new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE).format(releaseDate) : null;
     }
 
     public int getReleaseYear() {
@@ -139,6 +142,10 @@ public class Movie implements Serializable {
 
     public void setVoteAverage(Double voteAverage) {
         this.voteAverage = voteAverage;
+    }
+
+    public String getStringHalfVoteAverage() {
+        return String.format(Locale.UK, "%.1f", voteAverage * .5);
     }
 
     public Double getPopularity() {

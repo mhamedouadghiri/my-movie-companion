@@ -43,5 +43,5 @@ public interface MovieService {
     );
 
     @GET("search/movie")
-    Call<MoviesResponse> searchMoviesByTitle(@Query("query") String title);
+    Call<MoviesResponse> searchMoviesByTitle(@Query("query") String title, @Query("page") int page);
 }

@@ -55,7 +55,7 @@
                 android:id="@+id/play_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/colorBlue"
+                android:backgroundTint="@color/colorAccent"
                 android:clickable="true"
                 android:contentDescription="@string/fab"
                 android:focusable="true"
@@ -128,14 +128,14 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dimens_xsmall"
                 android:gravity="center"
-                android:text="@{String.valueOf(movie.voteAverage)}"
+                android:text="@{movie.stringHalfVoteAverage}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorText"
                 app:drawableEndCompat="@drawable/ic_star_white_24dp"
                 app:layout_constraintEnd_toEndOf="@+id/label_vote"
                 app:layout_constraintStart_toStartOf="@+id/label_vote"
                 app:layout_constraintTop_toTopOf="@+id/text_release_date"
-                tools:text="7/10" />
+                tools:text="4/5" />
 
             <TextView
                 android:id="@+id/label_vote"
@@ -187,7 +187,7 @@
                 android:layout_marginTop="@dimen/dimens_small"
                 android:drawablePadding="@dimen/dimens_xsmall"
                 android:gravity="center"
-                android:text="@{movie.releaseDateFormatted}"
+                android:text="@{movie.releaseDateFormatted ?? @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorText"
                 app:drawableStartCompat="@drawable/ic_av_timer_white_24dp"
@@ -221,6 +221,33 @@
                 app:layout_constraintTop_toBottomOf="@+id/label_vote" />
 
             <TextView
+                android:id="@+id/rating_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_small"
+                android:layout_marginTop="@dimen/dimens_xsmall"
+                android:text="@string/rate_this_movie"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_bottom" />
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_small"
+                android:layout_marginTop="@dimen/dimens_xsmall"
+                android:layout_marginEnd="@dimen/dimens_small"
+                android:numStars="5"
+                android:stepSize=".5"
+                android:theme="@style/RatingBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rating_text" />
+
+            <TextView
                 android:id="@+id/label_overview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -228,10 +255,10 @@
                 android:layout_marginTop="@dimen/dimens_xsmall"
                 android:text="@string/overview"
                 android:textColor="@color/colorText"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_bottom" />
+                app:layout_constraintTop_toBottomOf="@+id/rating_bar" />
 
             <TextView
                 android:id="@+id/detail_movie_overview"
@@ -257,7 +284,7 @@
                 android:layout_marginEnd="@dimen/dimens_small"
                 android:text="@string/cast"
                 android:textColor="@color/colorText"
-                android:textSize="15sp"
+                android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -273,22 +300,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_cast" />
 
-            <ToggleButton
-                android:id="@+id/favoris"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="60dp"
-                android:background="@drawable/ic_baseline_notes_24"
-                android:onClick="openDialog"
-                android:textOff=""
-                android:textOn=""
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.064"
-                app:layout_constraintStart_toEndOf="@+id/movie_poster_image_view"
-                app:layout_constraintTop_toBottomOf="@+id/detail_movie_title"
-                tools:ignore="MissingConstraints" />
+<!--                        <ToggleButton-->
+<!--                            android:id="@+id/favoris"-->
+<!--                            android:layout_width="30dp"-->
+<!--                            android:layout_height="30dp"-->
+<!--                            android:layout_margin="10dp"-->
+<!--                            android:layout_marginTop="8dp"-->
+<!--                            android:layout_marginEnd="60dp"-->
+<!--                            android:background="@drawable/ic_baseline_notes_24"-->
+<!--                            android:onClick="openDialog"-->
+<!--                            android:textOff=""-->
+<!--                            android:textOn=""-->
+<!--                            app:layout_constraintEnd_toEndOf="parent"-->
+<!--                            app:layout_constraintHorizontal_bias="0.064"-->
+<!--                            app:layout_constraintStart_toEndOf="@+id/movie_poster_image_view"-->
+<!--                            app:layout_constraintTop_toBottomOf="@+id/detail_movie_title"-->
+<!--                            tools:ignore="MissingConstraints" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

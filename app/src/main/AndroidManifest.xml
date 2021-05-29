@@ -13,20 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMovieCompanion">
 
-        <activity android:name=".ui.LoginActivity">
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ui.LoginActivity" />
 
         <activity android:name=".ui.RegisterActivity" />
 
         <activity android:name=".recommender.TestRecSys" />
 
         <activity android:name=".ui.MovieDetailActivity" />
+
+        <activity android:name=".ui.SearchActivity" />
     </application>
 
 </manifest>
