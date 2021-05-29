@@ -1,16 +1,14 @@
 package com.mhamed.mymoviecompanion.viewmodel;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.mhamed.mymoviecompanion.entity.WatchedMovies;
+import com.mhamed.mymoviecompanion.entity.WatchedMovie;
 import com.mhamed.mymoviecompanion.repository.WatchedMoviesRepository;
 
 import java.util.List;
-
 
 public class WatchedMoviesViewModel extends ViewModel {
 
@@ -20,12 +18,15 @@ public class WatchedMoviesViewModel extends ViewModel {
         watchedMoviesRepository = new WatchedMoviesRepository(application);
     }
 
-    public void insertWatchedMovies(WatchedMovies watchedMovies) {
-        Log.i("FilmsModel", watchedMovies.getReview());
-        watchedMoviesRepository.insertWatchedMovies(watchedMovies);
+    public void insertWatchedMovie(WatchedMovie watchedMovie) {
+        watchedMoviesRepository.insertWatchedMovie(watchedMovie);
     }
 
-    public LiveData<List<WatchedMovies>> getAllWatchedMoviesByUserId(Long userId) {
+    public LiveData<List<WatchedMovie>> getAllWatchedMoviesByUserId(Long userId) {
         return watchedMoviesRepository.getAllWatchedMoviesByUserId(userId);
+    }
+
+    public LiveData<WatchedMovie> getWatchedMovieByUserIdAndMovieId(Long userId, Long movieId) {
+        return watchedMoviesRepository.getWatchedMovieByUserIdAndMovieId(userId, movieId);
     }
 }

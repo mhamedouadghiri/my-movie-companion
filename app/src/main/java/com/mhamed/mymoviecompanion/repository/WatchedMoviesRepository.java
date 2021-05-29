@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.mhamed.mymoviecompanion.dao.WatchedMoviesDAO;
 import com.mhamed.mymoviecompanion.database.ConfigDatabase;
-import com.mhamed.mymoviecompanion.entity.WatchedMovies;
+import com.mhamed.mymoviecompanion.entity.WatchedMovie;
 
 import java.util.List;
 
@@ -21,15 +21,19 @@ public class WatchedMoviesRepository {
         watchedMoviesDAO = database.watchedMoviesDAO();
     }
 
-    public LiveData<List<WatchedMovies>> getAllWatchedMoviesByUserId(Long userId) {
+    public LiveData<List<WatchedMovie>> getAllWatchedMoviesByUserId(Long userId) {
         return watchedMoviesDAO.getAllWatchedMoviesByUserId(userId);
     }
 
-    public void insertWatchedMovies(WatchedMovies watchedMovies) {
-        new InsertFilmsVusAsyncTask(watchedMoviesDAO).execute(watchedMovies);
+    public void insertWatchedMovie(WatchedMovie watchedMovie) {
+        new InsertFilmsVusAsyncTask(watchedMoviesDAO).execute(watchedMovie);
     }
 
-    private static class InsertFilmsVusAsyncTask extends AsyncTask<WatchedMovies, Void, Void> {
+    public LiveData<WatchedMovie> getWatchedMovieByUserIdAndMovieId(Long userId, Long movieId) {
+        return watchedMoviesDAO.getWatchedMovieByUserIdAndMovieId(userId, movieId);
+    }
+
+    private static class InsertFilmsVusAsyncTask extends AsyncTask<WatchedMovie, Void, Void> {
         private WatchedMoviesDAO watchedMoviesDAO;
 
         private InsertFilmsVusAsyncTask(WatchedMoviesDAO watchedMoviesDAO) {
@@ -37,8 +41,8 @@ public class WatchedMoviesRepository {
         }
 
         @Override
-        protected Void doInBackground(WatchedMovies... watchedMovies) {
-            watchedMoviesDAO.insertWatchedMovies(watchedMovies[0]);
+        protected Void doInBackground(WatchedMovie... watchedMovies) {
+            watchedMoviesDAO.insertWatchedMovie(watchedMovies[0]);
             return null;
         }
     }
