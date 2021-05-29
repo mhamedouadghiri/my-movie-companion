@@ -1,6 +1,9 @@
 package com.mhamed.mymoviecompanion;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -15,7 +18,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.mhamed.mymoviecompanion.entity.User;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
+import com.mhamed.mymoviecompanion.ui.GenreActivity;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
+import com.mhamed.mymoviecompanion.ui.MovieDetailActivity;
+import com.mhamed.mymoviecompanion.util.GenreUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -39,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         user = (User) getIntent().getSerializableExtra("User");
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListMoviesFragment()).commit();
         }
@@ -83,39 +88,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.Romantic:
-                // display romantic movie
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListMoviesFragment()).commit();
-                break;
-            case R.id.Action:
-                // display Action movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
-                break;
-            case R.id.Cartoon:
-                // display Cartoon movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
-                break;
-            case R.id.War:
-                // display War movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
-                break;
-            case R.id.horror:
-                // display horror movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
-                break;
-            case R.id.Favoris:
-                // display Favoris movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
-                break;
-            case R.id.History:
-                // display History movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
-                break;
             case R.id.LogOut:
-                // display LogOut movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
+                break;
+            default:
+                Intent intent = new Intent(this, GenreActivity.class);
+                intent.putExtra("genre", item.getTitle().toString());
+                startActivity(intent);
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
