@@ -1,69 +1,80 @@
 package com.mhamed.mymoviecompanion.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mhamed.mymoviecompanion.MainActivity;
 import com.mhamed.mymoviecompanion.R;
-import com.mhamed.mymoviecompanion.entity.User;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.viewmodel.UserViewModel;
 
-public class LoginActivity extends AppCompatActivity {
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_EMAIL;
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_LOGGED_IN;
 
-    private EditText email;
-    private EditText password;
-    private Button login;
+public class LoginActivity extends BaseActivity {
+
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
     private UserViewModel userViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
+
         getSupportActionBar().hide();
+
         TextView tvSignUp = findViewById(R.id.tvSignUpLogin);
         TextView tvSignUpSecond = findViewById(R.id.tvSignUpSecond);
-        tvSignUp.setOnClickListener(onClickLogin());
-        tvSignUpSecond.setOnClickListener(onClickLogin());
-        email = findViewById(R.id.LoginEmail);
-        password = findViewById(R.id.LoginPassword);
-        login = findViewById(R.id.LoginButton);
-        login.setOnClickListener(onClickSignUp());
+
+        tvSignUp.setOnClickListener(onClickSignUp());
+        tvSignUpSecond.setOnClickListener(onClickSignUp());
+
+        emailEditText = findViewById(R.id.LoginEmail);
+        passwordEditText = findViewById(R.id.LoginPassword);
+        loginButton = findViewById(R.id.LoginButton);
+        loginButton.setOnClickListener(onClickLogin());
 
         userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
         userViewModel.init(this.getApplication());
     }
 
-    private View.OnClickListener onClickLogin() {
+    private View.OnClickListener onClickSignUp() {
         return view -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             LoginActivity.this.startActivity(intent);
         };
     }
 
-    private View.OnClickListener onClickSignUp() {
+    private View.OnClickListener onClickLogin() {
         return view -> {
             if (confirmInput()) {
-                final String Email = email.getText().toString();
-                final String Password = password.getText().toString();
-                userViewModel.login(Email, Password).observe(LoginActivity.this, new Observer<User>() {
-                    @Override
-                    public void onChanged(User user) {
-                        if (user != null) {
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            intent.putExtra("User", user);
-                            LoginActivity.this.startActivity(intent);
-                        } else {
-                            Toast.makeText(getApplicationContext(), "invalided email or password", Toast.LENGTH_SHORT).show();
-                        }
+                final String email = emailEditText.getText().toString();
+                final String password = passwordEditText.getText().toString();
+                userViewModel.login(email, password).observe(LoginActivity.this, user -> {
+                    if (user != null) {
+                        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+                        editor.putString(PREFERENCES_LOGIN_LOGGED_IN, "yes");
+                        editor.putLong(PREFERENCES_LOGIN_ID, user.getId());
+                        editor.putString(PREFERENCES_LOGIN_EMAIL, user.getEmail());
+                        editor.apply();
+
+                        Intent intent = new Intent(this, MainActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Incorrect username or password.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -71,23 +82,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private boolean validateEmail() {
-        String emailInput = email.getText().toString().trim();
+        String emailInput = emailEditText.getText().toString().trim();
         if (emailInput.isEmpty()) {
-            email.setError("Field can't be empty");
+            emailEditText.setError("Field can't be empty");
             return false;
         } else {
-            email.setError(null);
+            emailEditText.setError(null);
             return true;
         }
     }
 
     private boolean validatePassword() {
-        String passwordInput = password.getText().toString().trim();
+        String passwordInput = passwordEditText.getText().toString().trim();
         if (passwordInput.isEmpty()) {
-            password.setError("Field can't be empty");
+            passwordEditText.setError("Field can't be empty");
             return false;
         } else {
-            password.setError(null);
+            passwordEditText.setError(null);
             return true;
         }
     }

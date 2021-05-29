@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -16,8 +15,9 @@ import com.mhamed.mymoviecompanion.entity.User;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MAIN_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Romantic:
@@ -113,9 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // display History movie
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
                 break;
-            case R.id.LogOut:
-                // display LogOut movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
+            case R.id.logout:
+                logout();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

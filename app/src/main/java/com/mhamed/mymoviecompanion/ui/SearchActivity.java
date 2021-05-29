@@ -7,11 +7,11 @@ import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.mhamed.mymoviecompanion.R;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends BaseActivity {
 
     private SearchView searchView;
 

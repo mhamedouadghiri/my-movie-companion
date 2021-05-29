@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +31,7 @@ import com.mhamed.mymoviecompanion.model.Video;
 import com.mhamed.mymoviecompanion.model.VideosResponse;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
@@ -40,7 +40,7 @@ import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MovieDetailActivity extends AppCompatActivity implements CustomDialog.CustomDialogInterface {
+public class MovieDetailActivity extends BaseActivity implements CustomDialog.CustomDialogInterface {
 
     private static final String TAG = "MOVIE_DETAIL_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
