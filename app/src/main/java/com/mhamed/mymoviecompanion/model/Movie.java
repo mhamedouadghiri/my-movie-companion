@@ -144,6 +144,10 @@ public class Movie implements Serializable {
         this.voteAverage = voteAverage;
     }
 
+    public String getStringHalfVoteAverage() {
+        return String.format(Locale.UK, "%.1f", voteAverage * .5);
+    }
+
     public Double getPopularity() {
         return popularity;
     }
