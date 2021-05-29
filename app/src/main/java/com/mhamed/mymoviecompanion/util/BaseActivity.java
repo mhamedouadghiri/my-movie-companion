@@ -12,6 +12,7 @@ import com.mhamed.mymoviecompanion.ui.RegisterActivity;
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_EMAIL;
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_LOGGED_IN;
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_USERNAME;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -39,6 +40,7 @@ public class BaseActivity extends AppCompatActivity {
         editor.putString(PREFERENCES_LOGIN_LOGGED_IN, "no");
         editor.remove(PREFERENCES_LOGIN_ID);
         editor.remove(PREFERENCES_LOGIN_EMAIL);
+        editor.remove(PREFERENCES_LOGIN_USERNAME);
         editor.apply();
 
         showLoginActivity();

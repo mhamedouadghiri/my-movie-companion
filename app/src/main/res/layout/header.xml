@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/Navheader"
+    android:id="@+id/nav_header"
     android:layout_width="match_parent"
     android:layout_height="160dp"
     android:background="@drawable/navheader"
@@ -14,7 +14,7 @@
         android:src="@drawable/user" />
 
     <TextView
-        android:id="@+id/Navusername"
+        android:id="@+id/nav_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -23,10 +23,9 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/Navemail"
+        android:id="@+id/nav_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email@gmail.com"
         android:textColor="@color/colorWhite" />
-
 </LinearLayout>

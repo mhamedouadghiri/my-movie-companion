@@ -20,6 +20,7 @@ import com.mhamed.mymoviecompanion.viewmodel.UserViewModel;
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_EMAIL;
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_LOGGED_IN;
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_USERNAME;
 
 public class LoginActivity extends BaseActivity {
 
@@ -69,6 +70,7 @@ public class LoginActivity extends BaseActivity {
                         editor.putString(PREFERENCES_LOGIN_LOGGED_IN, "yes");
                         editor.putLong(PREFERENCES_LOGIN_ID, user.getId());
                         editor.putString(PREFERENCES_LOGIN_EMAIL, user.getEmail());
+                        editor.putString(PREFERENCES_LOGIN_USERNAME, user.getUsername());
                         editor.apply();
 
                         Intent intent = new Intent(this, MainActivity.class);
