@@ -9,16 +9,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -27,12 +27,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mhamed.mymoviecompanion.CustomDialog;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.CastAdapter;
 import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
 import com.mhamed.mymoviecompanion.adapters.MovieItemClickListener;
 import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
+import com.mhamed.mymoviecompanion.entity.SavedMovie;
 import com.mhamed.mymoviecompanion.entity.WatchedMovie;
 import com.mhamed.mymoviecompanion.model.Cast;
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
@@ -48,6 +48,7 @@ import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
 import com.mhamed.mymoviecompanion.viewmodel.MovieGenreViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.SimilarMoviesViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.SavedMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
 
 import java.util.List;
@@ -55,7 +56,7 @@ import java.util.stream.Collectors;
 
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 
-public class MovieDetailActivity extends BaseActivity implements CustomDialog.CustomDialogInterface, MovieItemClickListener {
+public class MovieDetailActivity extends BaseActivity {
 
     private static final String TAG = "MOVIE_DETAIL_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
@@ -66,10 +67,14 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
 
     private RecyclerView castRecyclerView;
     private Video video;
-    private Button share;
-    private WatchedMoviesViewModel watchedMoviesViewModel;
+    private FloatingActionButton playTrailerFAB;
+    private RatingBar ratingBar;
 
-    private Long userId;
+    private WatchedMoviesViewModel watchedMoviesViewModel;
+    private SavedMoviesViewModel savedMoviesViewModel;
+
+    private Movie currentMovie;
+    private Long currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,46 +85,53 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        userId = sharedPreferences.getLong(PREFERENCES_LOGIN_ID, -1);
+        currentUserId = sharedPreferences.getLong(PREFERENCES_LOGIN_ID, -1);
 
-        Movie movie = (Movie) getIntent().getExtras().get("movie");
-        movie.setGenres(
+        currentMovie = (Movie) getIntent().getExtras().get("movie");
+        currentMovie.setGenres(
                 GenreUtil.getGenresFromAssets(this)
                         .stream()
-                        .filter(genre -> movie.getGenreIds().contains(genre.getId()))
+                        .filter(genre -> currentMovie.getGenreIds().contains(genre.getId()))
                         .collect(Collectors.toList())
         );
 
-        binding.setMovie(movie);
+        binding.setMovie(currentMovie);
 
-        setTitle(movie.getTitle());
+        setTitle(currentMovie.getTitle());
 
         castRecyclerView = findViewById(R.id.cast_recycler_view);
 
         watchedMoviesViewModel = new ViewModelProvider(this).get(WatchedMoviesViewModel.class);
         watchedMoviesViewModel.init(this.getApplication());
 
-        FloatingActionButton playFAB = findViewById(R.id.play_fab);
-        playFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
+        savedMoviesViewModel = new ViewModelProvider(this).get(SavedMoviesViewModel.class);
+        savedMoviesViewModel.init(this.getApplication());
 
         ImageView movieCoverImg = findViewById(R.id.movie_backdrop_image_view);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
+      
+        setCastRecyclerView(currentMovie.getId());
+        setVideo(currentMovie.getId());
 
-        setCastRecyclerView(movie.getId());
-        setVideo(movie.getId());
+        playTrailerFAB = findViewById(R.id.play_fab);
+        setPlayTrailerFAB();
+
+        new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(currentUserId, currentMovie.getId());
+      
         setSimilarMoviesRecyclerView(movie.getId());
+    }
 
-        share = findViewById(R.id.share);
-        share.setOnClickListener((v -> {
-            Intent SharingFilm = new Intent(Intent.ACTION_SEND);
-            SharingFilm.setType("text/plain");
-            SharingFilm.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT");
-            SharingFilm.putExtra(Intent.EXTRA_TEXT, Constants.YOUTUBE_URL + video.getKey());
-            startActivity(Intent.createChooser(SharingFilm, "SHARING"));
-        }));
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
+        new SetSaveAsync(savedMoviesViewModel, menu.findItem(R.id.menu_save_button), this).execute(currentUserId, currentMovie.getId());
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        playFAB.setOnClickListener(v -> {
-            if (!video.isValidYoutubeTrailer()) {
+    private void setPlayTrailerFAB() {
+        playTrailerFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
+        playTrailerFAB.setOnClickListener(v -> {
+            if (video == null || !video.isValidYoutubeTrailer()) {
                 Log.i(TAG, "Trailer key (url) is not set.");
                 Toast.makeText(getApplicationContext(), "Trailer not available at the moment.", Toast.LENGTH_LONG).show();
                 return;
@@ -133,13 +145,10 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
             }
         });
 
-        RatingBar ratingBar = findViewById(R.id.rating_bar);
-
+        ratingBar = findViewById(R.id.rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) ->
-                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(userId, String.valueOf(movie.getId()), rating, ""))
+                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(currentUserId, String.valueOf(currentMovie.getId()), rating, ""))
         );
-
-        new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(userId, movie.getId());
     }
 
     private void setupToolbar() {
@@ -154,8 +163,34 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.menu_share_button) {
+            setShareButtonAction();
+        } else if (item.getItemId() == R.id.menu_save_button) {
+            saveMovieToWatchlist(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setShareButtonAction() {
+        String text;
+        if (video != null && video.isValidYoutubeTrailer()) {
+            text = Constants.YOUTUBE_URL + video.getKey();
+        } else {
+            text = "Check out this movie: " + currentMovie.getTitle();
+        }
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Share this movie");
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(intent, "Share using"));
+    }
+
+    private void saveMovieToWatchlist(MenuItem item) {
+        boolean isChecked = item.getIcon().getConstantState().equals(
+                ResourcesCompat.getDrawable(getResources(), R.drawable.bookmark_filled, null).getConstantState());
+        savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId, currentMovie.getId().toString(), !isChecked));
+        item.setIcon(!isChecked ? R.drawable.bookmark_filled : R.drawable.bookmark);
     }
 
     private void setCastRecyclerView(long id) {
@@ -192,24 +227,12 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         });
     }
 
-    public void openDialog(View view) {
-        CustomDialog custom_dialog = new CustomDialog();
-        custom_dialog.show(getSupportFragmentManager(), "Test CustomerDialog");
-    }
-
     @Override
     public void onMovieClick(Movie movie, ImageView movieImageView) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("movie", movie);
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, movieImageView, "sharedName");
         startActivity(intent, options.toBundle());
-    }
-
-    @Override
-    public void applyTexts(String critique, int note) {
-        Log.i("Note", String.valueOf(note));
-        //Insertion de FilmsVus
-        //filmsVusViewModel.insertWatchedMovie(new FilmsVus(1,video.getId(),note,critique));
     }
 
     private static class SetRatingAsync extends AsyncTask<Long, Void, LiveData<WatchedMovie>> {
@@ -234,6 +257,33 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
             watchedMoviesLiveData.observe(owner, watchedMovie -> {
                 if (watchedMovie != null && watchedMovie.getVote() != null) {
                     ratingBar.setRating(watchedMovie.getVote());
+                }
+            });
+        }
+    }
+
+    private static class SetSaveAsync extends AsyncTask<Long, Void, LiveData<SavedMovie>> {
+        private final LifecycleOwner owner;
+        private final SavedMoviesViewModel savedMoviesViewModel;
+        private final MenuItem menuItem;
+
+        public SetSaveAsync(SavedMoviesViewModel savedMoviesViewModel, MenuItem menuItem, LifecycleOwner owner) {
+            this.savedMoviesViewModel = savedMoviesViewModel;
+            this.menuItem = menuItem;
+            this.owner = owner;
+        }
+
+        @Override
+        protected LiveData<SavedMovie> doInBackground(Long... longs) {
+            return savedMoviesViewModel.getSavedMovieByUserIdAndMovieId(longs[0], longs[1]);
+        }
+
+        @Override
+        protected void onPostExecute(LiveData<SavedMovie> savedMovieLiveData) {
+            super.onPostExecute(savedMovieLiveData);
+            savedMovieLiveData.observe(owner, savedMovie -> {
+                if (savedMovie != null) {
+                    menuItem.setIcon(savedMovie.getSaved() ? R.drawable.bookmark_filled : R.drawable.bookmark);
                 }
             });
         }

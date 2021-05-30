@@ -32,13 +32,11 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
 
     private final Context context;
     private final MovieItemClickListener movieItemClickListener;
-    private final BaseViewModel viewModel;
     private Resource resource = null;
 
     public MovieAdapter(Context context, MovieItemClickListener listener, BaseViewModel viewModel) {
         super(MOVIE_COMPARATOR);
         this.context = context;
-        this.viewModel = viewModel;
         movieItemClickListener = listener;
     }
 
@@ -50,7 +48,7 @@ public class MovieAdapter extends PagedListAdapter<Movie, RecyclerView.ViewHolde
             return new MyViewHolder(ItemMovieBinding.inflate(layoutInflater, parent, false));
         } else if (viewType == R.layout.item_network_state) {
             View nview = LayoutInflater.from(context).inflate(R.layout.item_network_state, parent, false);
-            return new NetworkStateViewHolder(nview, viewModel);
+            return new NetworkStateViewHolder(nview);
         }
         throw new IllegalArgumentException("unknown view type " + viewType);
     }

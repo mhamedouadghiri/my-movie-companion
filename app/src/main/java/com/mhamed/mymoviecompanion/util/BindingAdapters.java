@@ -20,6 +20,12 @@ public class BindingAdapters {
 
     @BindingAdapter({"imagePath", "imageSizeType"})
     public static void loadImage(ImageView imageView, String imagePath, ImageSizeType imageSizeType) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            Glide.with(imageView.getContext())
+                    .load(imageSizeType == ImageSizeType.BACKDROP ? R.drawable.placeholder512 : R.drawable.placeholder128)
+                    .into(imageView);
+            return;
+        }
         String baseImageUrl;
         switch (imageSizeType) {
             case BACKDROP:
@@ -35,7 +41,9 @@ public class BindingAdapters {
                 baseImageUrl = Constants.BASE_ORIGINAL_IMAGE_URL;
                 break;
         }
-        Glide.with(imageView.getContext()).load(baseImageUrl + imagePath).into(imageView);
+        Glide.with(imageView.getContext())
+                .load(baseImageUrl + imagePath)
+                .into(imageView);
     }
 
     @BindingAdapter({"items"})

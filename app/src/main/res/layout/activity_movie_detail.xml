@@ -35,22 +35,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ToggleButton
-                android:id="@+id/share"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="10dp"
-                android:layout_marginStart="32dp"
-                android:background="@drawable/ic_baseline_share_24"
-                android:onClick="openDialog"
-                android:textOff=""
-                android:textOn=""
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/movie_backdrop_image_view"
-                tools:ignore="MissingConstraints" />
-
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/play_fab"
                 android:layout_width="wrap_content"
@@ -86,7 +70,7 @@
                 android:layout_marginStart="@dimen/dimens_small"
                 android:layout_marginTop="@dimen/dimens_small"
                 android:layout_marginEnd="@dimen/dimens_small"
-                android:text="@{movie.title}"
+                android:text="@{movie.title ?? @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                 android:textColor="@color/colorText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -128,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dimens_xsmall"
                 android:gravity="center"
-                android:text="@{movie.stringHalfVoteAverage}"
+                android:text="@{movie.stringHalfVoteAverage ?? @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorText"
                 app:drawableEndCompat="@drawable/ic_star_white_24dp"
@@ -144,7 +128,7 @@
                 android:layout_marginStart="@dimen/dimens_small"
                 android:layout_marginTop="@dimen/dimens_xsmall"
                 android:layout_marginEnd="@dimen/dimens_small"
-                android:text="@{@string/label_votes(movie.voteCount)}"
+                android:text="@{movie.voteCount != null ? @string/label_votes(movie.voteCount) : @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
                 android:textColor="@color/colorText"
                 app:layout_constraintEnd_toStartOf="@+id/label_language"
@@ -159,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dimens_xsmall"
                 android:gravity="center"
-                android:text="@{movie.originalLanguage.toUpperCase}"
+                android:text="@{movie.originalLanguage.toUpperCase ?? @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:textColor="@color/colorText"
                 app:drawableStartCompat="@drawable/ic_language_white_24dp"
@@ -268,7 +252,7 @@
                 android:layout_marginTop="@dimen/dimens_xsmall"
                 android:layout_marginEnd="@dimen/dimens_small"
                 android:lineSpacingExtra="8dp"
-                android:text="@{movie.overview}"
+                android:text="@{movie.overview ?? @string/empty}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:textColor="@color/colorText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -324,22 +308,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_similar_movies" />
-<!--                        <ToggleButton-->
-<!--                            android:id="@+id/favoris"-->
-<!--                            android:layout_width="30dp"-->
-<!--                            android:layout_height="30dp"-->
-<!--                            android:layout_margin="10dp"-->
-<!--                            android:layout_marginTop="8dp"-->
-<!--                            android:layout_marginEnd="60dp"-->
-<!--                            android:background="@drawable/ic_baseline_notes_24"-->
-<!--                            android:onClick="openDialog"-->
-<!--                            android:textOff=""-->
-<!--                            android:textOn=""-->
-<!--                            app:layout_constraintEnd_toEndOf="parent"-->
-<!--                            app:layout_constraintHorizontal_bias="0.064"-->
-<!--                            app:layout_constraintStart_toEndOf="@+id/movie_poster_image_view"-->
-<!--                            app:layout_constraintTop_toBottomOf="@+id/detail_movie_title"-->
-<!--                            tools:ignore="MissingConstraints" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 </layout>

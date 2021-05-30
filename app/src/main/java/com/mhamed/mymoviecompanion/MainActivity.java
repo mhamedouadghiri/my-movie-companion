@@ -15,7 +15,6 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
-import com.mhamed.mymoviecompanion.entity.User;
 import com.mhamed.mymoviecompanion.ui.GenreActivity;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
 import com.mhamed.mymoviecompanion.util.BaseActivity;
@@ -32,7 +31,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +50,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        user = (User) getIntent().getSerializableExtra("User");
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListMoviesFragment()).commit();
         }
@@ -83,12 +80,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.logout) {
-            logout();
-        } else {
+        if (item.getGroupId() == R.id.menu_genres_group) {
             Intent intent = new Intent(this, GenreActivity.class);
             intent.putExtra("genre", item.getTitle().toString());
             startActivity(intent);
+        } else if (item.getGroupId() == R.id.menu_user_group) {
+            if (item.getItemId() == R.id.logout) {
+                logout();
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.MyMovieCompanion" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.MyMovieCompanion" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryVariant">@color/colorPrimaryDark</item>
@@ -11,6 +11,11 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@null</item>
     </style>
 
     <style name="Theme.MyMovieCompanion.NoActionBar">

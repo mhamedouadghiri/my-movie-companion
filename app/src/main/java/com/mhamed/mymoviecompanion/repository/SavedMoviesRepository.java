@@ -26,13 +26,17 @@ public class SavedMoviesRepository {
     }
 
     public void insertSavedMovie(SavedMovie savedMovie) {
-        new InsertFilmsEnviesAsyncTask(savedMoviesDAO).execute(savedMovie);
+        new InsertSavedMovieAsyncTask(savedMoviesDAO).execute(savedMovie);
     }
 
-    private static class InsertFilmsEnviesAsyncTask extends AsyncTask<SavedMovie, Void, Void> {
+    public LiveData<SavedMovie> getSavedMovieByUserIdAndMovieId(Long userId, Long movieId) {
+        return savedMoviesDAO.getSavedMovieByUserIdAndMovieId(userId, movieId);
+    }
+
+    private static class InsertSavedMovieAsyncTask extends AsyncTask<SavedMovie, Void, Void> {
         private SavedMoviesDAO savedMoviesDAO;
 
-        private InsertFilmsEnviesAsyncTask(SavedMoviesDAO savedMoviesDAO) {
+        private InsertSavedMovieAsyncTask(SavedMoviesDAO savedMoviesDAO) {
             this.savedMoviesDAO = savedMoviesDAO;
         }
 
