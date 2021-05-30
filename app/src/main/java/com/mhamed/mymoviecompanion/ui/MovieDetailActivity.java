@@ -61,9 +61,13 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
     private RecyclerView castRecyclerView;
     private Video video;
     private Button share;
+    private FloatingActionButton playTrailerFAB;
+    private RatingBar ratingBar;
+
     private WatchedMoviesViewModel watchedMoviesViewModel;
 
-    private Long userId;
+    private Movie currentMovie;
+    private Long currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,35 +78,41 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        userId = sharedPreferences.getLong(PREFERENCES_LOGIN_ID, -1);
+        currentUserId = sharedPreferences.getLong(PREFERENCES_LOGIN_ID, -1);
 
-        Movie movie = (Movie) getIntent().getExtras().get("movie");
-        movie.setGenres(
+        currentMovie = (Movie) getIntent().getExtras().get("movie");
+        currentMovie.setGenres(
                 GenreUtil.getGenresFromAssets(this)
                         .stream()
-                        .filter(genre -> movie.getGenreIds().contains(genre.getId()))
+                        .filter(genre -> currentMovie.getGenreIds().contains(genre.getId()))
                         .collect(Collectors.toList())
         );
 
-        binding.setMovie(movie);
+        binding.setMovie(currentMovie);
 
-        setTitle(movie.getTitle());
+        setTitle(currentMovie.getTitle());
 
         castRecyclerView = findViewById(R.id.cast_recycler_view);
 
         watchedMoviesViewModel = new ViewModelProvider(this).get(WatchedMoviesViewModel.class);
         watchedMoviesViewModel.init(this.getApplication());
 
-        FloatingActionButton playFAB = findViewById(R.id.play_fab);
-        playFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
-
         ImageView movieCoverImg = findViewById(R.id.movie_backdrop_image_view);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
-        setCastRecyclerView(movie.getId());
-        setVideo(movie.getId());
+        setCastRecyclerView(currentMovie.getId());
+        setVideo(currentMovie.getId());
 
         share = findViewById(R.id.share);
+        setShareButton();
+
+        playTrailerFAB = findViewById(R.id.play_fab);
+        setPlayTrailerFAB();
+
+        new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(currentUserId, currentMovie.getId());
+    }
+
+    private void setShareButton() {
         share.setOnClickListener((v -> {
             Intent SharingFilm = new Intent(Intent.ACTION_SEND);
             SharingFilm.setType("text/plain");
@@ -110,9 +120,12 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
             SharingFilm.putExtra(Intent.EXTRA_TEXT, Constants.YOUTUBE_URL + video.getKey());
             startActivity(Intent.createChooser(SharingFilm, "SHARING"));
         }));
+    }
 
-        playFAB.setOnClickListener(v -> {
-            if (!video.isValidYoutubeTrailer()) {
+    private void setPlayTrailerFAB() {
+        playTrailerFAB.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
+        playTrailerFAB.setOnClickListener(v -> {
+            if (video == null || !video.isValidYoutubeTrailer()) {
                 Log.i(TAG, "Trailer key (url) is not set.");
                 Toast.makeText(getApplicationContext(), "Trailer not available at the moment.", Toast.LENGTH_LONG).show();
                 return;
@@ -126,13 +139,10 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
             }
         });
 
-        RatingBar ratingBar = findViewById(R.id.rating_bar);
-
+        ratingBar = findViewById(R.id.rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) ->
-                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(userId, String.valueOf(movie.getId()), rating, ""))
+                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(currentUserId, String.valueOf(currentMovie.getId()), rating, ""))
         );
-
-        new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(userId, movie.getId());
     }
 
     private void setupToolbar() {

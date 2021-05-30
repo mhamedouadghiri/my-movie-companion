@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Genres">
+    <item android:title="@string/genres">
         <menu>
             <group android:checkableBehavior="single">
                 <item
@@ -65,12 +65,12 @@
         </menu>
     </item>
 
-    <item android:title="User">
+    <item android:title="@string/user">
         <menu>
             <item
-                android:id="@+id/Favoris"
+                android:id="@+id/watchlist"
                 android:icon="@drawable/ic_baseline_favorite_24"
-                android:title="Favoris" />
+                android:title="@string/watchlist" />
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_baseline_login_24"

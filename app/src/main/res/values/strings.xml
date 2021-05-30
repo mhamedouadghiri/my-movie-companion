@@ -37,4 +37,7 @@
     <string name="empty">--</string>
     <string name="rate_this_movie">Rate this movie</string>
     <string name="logout">Logout</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="user">User</string>
+    <string name="genres">Genres</string>
 </resources>
