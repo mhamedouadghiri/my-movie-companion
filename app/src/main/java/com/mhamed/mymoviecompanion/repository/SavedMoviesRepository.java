@@ -7,10 +7,9 @@ import androidx.lifecycle.LiveData;
 
 import com.mhamed.mymoviecompanion.dao.SavedMoviesDAO;
 import com.mhamed.mymoviecompanion.database.ConfigDatabase;
-import com.mhamed.mymoviecompanion.entity.SavedMovies;
+import com.mhamed.mymoviecompanion.entity.SavedMovie;
 
 import java.util.List;
-
 
 public class SavedMoviesRepository {
 
@@ -22,15 +21,15 @@ public class SavedMoviesRepository {
         savedMoviesDAO = database.savedMoviesDAO();
     }
 
-    public LiveData<List<SavedMovies>> getAllSavedMoviesByUserId(Long userId) {
+    public LiveData<List<SavedMovie>> getAllSavedMoviesByUserId(Long userId) {
         return savedMoviesDAO.getAllSavedMoviesByUserId(userId);
     }
 
-    public void insertSavedMovies(SavedMovies savedMovies) {
-        new InsertFilmsEnviesAsyncTask(savedMoviesDAO).execute(savedMovies);
+    public void insertSavedMovie(SavedMovie savedMovie) {
+        new InsertFilmsEnviesAsyncTask(savedMoviesDAO).execute(savedMovie);
     }
 
-    private static class InsertFilmsEnviesAsyncTask extends AsyncTask<SavedMovies, Void, Void> {
+    private static class InsertFilmsEnviesAsyncTask extends AsyncTask<SavedMovie, Void, Void> {
         private SavedMoviesDAO savedMoviesDAO;
 
         private InsertFilmsEnviesAsyncTask(SavedMoviesDAO savedMoviesDAO) {
@@ -38,8 +37,8 @@ public class SavedMoviesRepository {
         }
 
         @Override
-        protected Void doInBackground(SavedMovies... filmsEnvies) {
-            savedMoviesDAO.insertSavedMovies(filmsEnvies[0]);
+        protected Void doInBackground(SavedMovie... filmsEnvies) {
+            savedMoviesDAO.insertSavedMovie(filmsEnvies[0]);
             return null;
         }
     }

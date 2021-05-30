@@ -7,15 +7,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.entity.User;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.viewmodel.UserViewModel;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private EditText email;
     private EditText password;
@@ -97,6 +97,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public boolean confirmInput() {
-        return validateEmail() && !(!validateUsername() | !validatePassword());
+        return validateEmail() && validateUsername() && validatePassword();
     }
 }

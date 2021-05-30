@@ -1,26 +1,31 @@
 package com.mhamed.mymoviecompanion;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mhamed.mymoviecompanion.entity.User;
-import com.mhamed.mymoviecompanion.remote.api.ApiClient;
-import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_EMAIL;
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_USERNAME;
+
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String TAG = "MAIN_ACTIVITY";
-    private final MovieService movieService = ApiClient.getInstance();
+
+    private SharedPreferences sharedPreferences;
 
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
@@ -30,14 +35,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         setupToolbar();
+
         drawerLayout = findViewById(R.id.drawer);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         user = (User) getIntent().getSerializableExtra("User");
 
         if (savedInstanceState == null) {
@@ -57,32 +69,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menubar, menu);
-//        MenuItem menuItem = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) menuItem.getActionView();
-//        searchView.setQueryHint(getString(R.string.search_movies));
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                movieService.searchMoviesByTitle(query).enqueue((SimpleCallback<MoviesResponse>) (call, response) -> {
-//                    if (response.isSuccessful() && response.body() != null) {
-//                        response.body().getMovies().forEach(movie -> Log.i(TAG, movie.getTitle()));
-//                    } else {
-//                        Toast.makeText(getApplicationContext(), "An error has occurred", Toast.LENGTH_SHORT).show();
-//                        Log.e(TAG, "Error on successful query submit.");
-//                    }
-//                });
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return true;
-//            }
-//        });
+        TextView emailTextView = findViewById(R.id.nav_email);
+        if (emailTextView != null) {
+            emailTextView.setText(sharedPreferences.getString(PREFERENCES_LOGIN_EMAIL, "Email"));
+        }
+        TextView usernameTextView = findViewById(R.id.nav_username);
+        if (usernameTextView != null) {
+            usernameTextView.setText(sharedPreferences.getString(PREFERENCES_LOGIN_USERNAME, "Username"));
+        }
         return true;
     }
 
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.Romantic:
@@ -113,9 +111,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // display History movie
                 //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
                 break;
-            case R.id.LogOut:
-                // display LogOut movie
-                //getSupportFragmentManager().beginTransaction().replace(R.id.fragment_Container,new ListeMovie_Fragment()).commit();
+            case R.id.logout:
+                logout();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);

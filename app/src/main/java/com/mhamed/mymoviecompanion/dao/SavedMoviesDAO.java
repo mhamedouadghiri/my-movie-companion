@@ -5,7 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.mhamed.mymoviecompanion.entity.SavedMovies;
+import com.mhamed.mymoviecompanion.entity.SavedMovie;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import java.util.List;
 public interface SavedMoviesDAO {
 
     @Insert
-    void insertSavedMovies(SavedMovies savedMovies);
+    void insertSavedMovie(SavedMovie savedMovie);
 
-    @Query("SELECT * From SavedMovies where userId=(:userId) ")
-    LiveData<List<SavedMovies>> getAllSavedMoviesByUserId(Long userId);
+    @Query("SELECT * From SavedMovie where userId=(:userId) ")
+    LiveData<List<SavedMovie>> getAllSavedMoviesByUserId(Long userId);
 }

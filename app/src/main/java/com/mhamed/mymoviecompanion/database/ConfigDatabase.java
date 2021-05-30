@@ -9,11 +9,11 @@ import androidx.room.RoomDatabase;
 import com.mhamed.mymoviecompanion.dao.SavedMoviesDAO;
 import com.mhamed.mymoviecompanion.dao.UserDAO;
 import com.mhamed.mymoviecompanion.dao.WatchedMoviesDAO;
-import com.mhamed.mymoviecompanion.entity.SavedMovies;
+import com.mhamed.mymoviecompanion.entity.SavedMovie;
 import com.mhamed.mymoviecompanion.entity.User;
-import com.mhamed.mymoviecompanion.entity.WatchedMovies;
+import com.mhamed.mymoviecompanion.entity.WatchedMovie;
 
-@Database(entities = {User.class, SavedMovies.class, WatchedMovies.class}, version = 3, exportSchema = false)
+@Database(entities = {User.class, SavedMovie.class, WatchedMovie.class}, version = 3, exportSchema = false)
 public abstract class ConfigDatabase extends RoomDatabase {
 
     // --- SINGLETON ---

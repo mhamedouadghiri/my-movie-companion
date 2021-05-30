@@ -5,11 +5,10 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.mhamed.mymoviecompanion.entity.SavedMovies;
+import com.mhamed.mymoviecompanion.entity.SavedMovie;
 import com.mhamed.mymoviecompanion.repository.SavedMoviesRepository;
 
 import java.util.List;
-
 
 public class SavedMoviesViewModel extends ViewModel {
 
@@ -19,11 +18,11 @@ public class SavedMoviesViewModel extends ViewModel {
         savedMoviesRepository = new SavedMoviesRepository(application);
     }
 
-    public void insertSavedMovies(SavedMovies savedMovies) {
-        savedMoviesRepository.insertSavedMovies(savedMovies);
+    public void insertSavedMovie(SavedMovie savedMovie) {
+        savedMoviesRepository.insertSavedMovie(savedMovie);
     }
 
-    public LiveData<List<SavedMovies>> getAllSavedMoviesByUserId(Long userId) {
+    public LiveData<List<SavedMovie>> getAllSavedMoviesByUserId(Long userId) {
         return savedMoviesRepository.getAllSavedMoviesByUserId(userId);
     }
 }
