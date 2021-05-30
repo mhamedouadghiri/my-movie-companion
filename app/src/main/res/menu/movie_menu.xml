@@ -3,7 +3,6 @@
 
     <item android:title="Genres">
         <menu>
-
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/Action"
@@ -62,11 +61,9 @@
                 <item
                     android:id="@+id/Western"
                     android:title="Western" />
-
             </group>
         </menu>
     </item>
-
 
     <item android:title="User">
         <menu>
@@ -75,9 +72,13 @@
                 android:icon="@drawable/ic_baseline_favorite_24"
                 android:title="Favoris" />
             <item
-                android:id="@+id/LogOut"
+                android:id="@+id/History"
+                android:icon="@drawable/ic_baseline_history_24"
+                android:title="History" />
+            <item
+                android:id="@+id/logout"
                 android:icon="@drawable/ic_baseline_login_24"
-                android:title="LogOut" />
+                android:title="@string/logout" />
         </menu>
     </item>
 </menu>

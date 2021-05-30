@@ -2,20 +2,25 @@ package com.mhamed.mymoviecompanion.ui;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +30,7 @@ import com.mhamed.mymoviecompanion.CustomDialog;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.CastAdapter;
 import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
+import com.mhamed.mymoviecompanion.entity.WatchedMovie;
 import com.mhamed.mymoviecompanion.model.Cast;
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
 import com.mhamed.mymoviecompanion.model.Movie;
@@ -32,6 +38,7 @@ import com.mhamed.mymoviecompanion.model.Video;
 import com.mhamed.mymoviecompanion.model.VideosResponse;
 import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
@@ -40,17 +47,23 @@ import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MovieDetailActivity extends AppCompatActivity implements CustomDialog.CustomDialogInterface {
+import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
+
+public class MovieDetailActivity extends BaseActivity implements CustomDialog.CustomDialogInterface {
 
     private static final String TAG = "MOVIE_DETAIL_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
 
     private ActivityMovieDetailBinding binding;
 
+    private SharedPreferences sharedPreferences;
+
     private RecyclerView castRecyclerView;
     private Video video;
     private Button share;
     private WatchedMoviesViewModel watchedMoviesViewModel;
+
+    private Long userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +72,9 @@ public class MovieDetailActivity extends AppCompatActivity implements CustomDial
         setupToolbar();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userId = sharedPreferences.getLong(PREFERENCES_LOGIN_ID, -1);
 
         Movie movie = (Movie) getIntent().getExtras().get("movie");
         movie.setGenres(
@@ -109,6 +125,14 @@ public class MovieDetailActivity extends AppCompatActivity implements CustomDial
                 startActivity(webIntent);
             }
         });
+
+        RatingBar ratingBar = findViewById(R.id.rating_bar);
+
+        ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) ->
+                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(userId, String.valueOf(movie.getId()), rating, ""))
+        );
+
+        new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(userId, movie.getId());
     }
 
     private void setupToolbar() {
@@ -160,6 +184,33 @@ public class MovieDetailActivity extends AppCompatActivity implements CustomDial
     public void applyTexts(String critique, int note) {
         Log.i("Note", String.valueOf(note));
         //Insertion de FilmsVus
-        //filmsVusViewModel.insertWatchedMovies(new FilmsVus(1,video.getId(),note,critique));
+        //filmsVusViewModel.insertWatchedMovie(new FilmsVus(1,video.getId(),note,critique));
+    }
+
+    private static class SetRatingAsync extends AsyncTask<Long, Void, LiveData<WatchedMovie>> {
+        private final LifecycleOwner owner;
+        private final WatchedMoviesViewModel watchedMoviesViewModel;
+        private final RatingBar ratingBar;
+
+        public SetRatingAsync(WatchedMoviesViewModel watchedMoviesViewModel, RatingBar ratingBar, LifecycleOwner owner) {
+            this.watchedMoviesViewModel = watchedMoviesViewModel;
+            this.ratingBar = ratingBar;
+            this.owner = owner;
+        }
+
+        @Override
+        protected LiveData<WatchedMovie> doInBackground(Long... longs) {
+            return watchedMoviesViewModel.getWatchedMovieByUserIdAndMovieId(longs[0], longs[1]);
+        }
+
+        @Override
+        protected void onPostExecute(LiveData<WatchedMovie> watchedMoviesLiveData) {
+            super.onPostExecute(watchedMoviesLiveData);
+            watchedMoviesLiveData.observe(owner, watchedMovie -> {
+                if (watchedMovie != null && watchedMovie.getVote() != null) {
+                    ratingBar.setRating(watchedMovie.getVote());
+                }
+            });
+        }
     }
 }

@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId")},
         primaryKeys = {"movieId", "userId"})
-public class SavedMovies implements Serializable {
+public class SavedMovie implements Serializable {
 
     @NonNull
     private Long userId;
@@ -16,7 +16,7 @@ public class SavedMovies implements Serializable {
     @NonNull
     private String movieId;
 
-    public SavedMovies(Long userId, String movieId) {
+    public SavedMovie(Long userId, String movieId) {
         this.userId = userId;
         this.movieId = movieId;
     }
