@@ -25,4 +25,8 @@ public class SavedMoviesViewModel extends ViewModel {
     public LiveData<List<SavedMovie>> getAllSavedMoviesByUserId(Long userId) {
         return savedMoviesRepository.getAllSavedMoviesByUserId(userId);
     }
+
+    public LiveData<SavedMovie> getSavedMovieByUserIdAndMovieId(Long userId, Long movieId) {
+        return savedMoviesRepository.getSavedMovieByUserIdAndMovieId(userId, movieId);
+    }
 }

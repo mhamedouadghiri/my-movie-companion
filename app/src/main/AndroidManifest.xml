@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyMovieCompanion">
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,19 +23,29 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.RegisterActivity"
-            android:noHistory="true" />
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".recommender.TestRecSys" />
+        <activity
+            android:name=".recommender.TestRecSys"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.MovieDetailActivity" />
+        <activity
+            android:name=".ui.MovieDetailActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.SearchActivity" />
+        <activity
+            android:name=".ui.SearchActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.GenreActivity" />
+        <activity
+            android:name=".ui.GenreActivity"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Genres">
+    <item android:title="@string/genres">
         <menu>
-            <group android:checkableBehavior="single">
+            <group
+                android:id="@+id/menu_genres_group"
+                android:checkableBehavior="none">
                 <item
                     android:id="@+id/Action"
                     android:title="Action" />
@@ -65,16 +67,20 @@
         </menu>
     </item>
 
-    <item android:title="User">
+    <item android:title="@string/user">
         <menu>
-            <item
-                android:id="@+id/Favoris"
-                android:icon="@drawable/ic_baseline_favorite_24"
-                android:title="Favoris" />
-            <item
-                android:id="@+id/logout"
-                android:icon="@drawable/ic_baseline_login_24"
-                android:title="@string/logout" />
+            <group
+                android:id="@+id/menu_user_group"
+                android:checkableBehavior="none">
+                <item
+                    android:id="@+id/watchlist"
+                    android:icon="@drawable/ic_baseline_favorite_24"
+                    android:title="@string/watchlist" />
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_baseline_login_24"
+                    android:title="@string/logout" />
+            </group>
         </menu>
     </item>
 </menu>
