@@ -16,9 +16,13 @@ public class SavedMovie implements Serializable {
     @NonNull
     private String movieId;
 
-    public SavedMovie(Long userId, String movieId) {
+    @NonNull
+    private Boolean saved;
+
+    public SavedMovie(@NonNull Long userId, @NonNull String movieId, @NonNull Boolean saved) {
         this.userId = userId;
         this.movieId = movieId;
+        this.saved = saved;
     }
 
     @NonNull
@@ -37,5 +41,14 @@ public class SavedMovie implements Serializable {
 
     public void setMovieId(@NonNull String movieId) {
         this.movieId = movieId;
+    }
+
+    @NonNull
+    public Boolean getSaved() {
+        return saved;
+    }
+
+    public void setSaved(@NonNull Boolean saved) {
+        this.saved = saved;
     }
 }

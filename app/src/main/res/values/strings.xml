@@ -41,4 +41,5 @@
     <string name="user">User</string>
     <string name="genres">Genres</string>
     <string name="share">Share</string>
+    <string name="add_to_watchlist">Add to watchlist</string>
 </resources>

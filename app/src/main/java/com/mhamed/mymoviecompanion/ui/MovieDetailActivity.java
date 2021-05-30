@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
@@ -30,6 +31,7 @@ import com.mhamed.mymoviecompanion.CustomDialog;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.CastAdapter;
 import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
+import com.mhamed.mymoviecompanion.entity.SavedMovie;
 import com.mhamed.mymoviecompanion.entity.WatchedMovie;
 import com.mhamed.mymoviecompanion.model.Cast;
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
@@ -42,6 +44,7 @@ import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
+import com.mhamed.mymoviecompanion.viewmodel.SavedMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
 
 import java.util.List;
@@ -64,6 +67,7 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
     private RatingBar ratingBar;
 
     private WatchedMoviesViewModel watchedMoviesViewModel;
+    private SavedMoviesViewModel savedMoviesViewModel;
 
     private Movie currentMovie;
     private Long currentUserId;
@@ -96,6 +100,9 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         watchedMoviesViewModel = new ViewModelProvider(this).get(WatchedMoviesViewModel.class);
         watchedMoviesViewModel.init(this.getApplication());
 
+        savedMoviesViewModel = new ViewModelProvider(this).get(SavedMoviesViewModel.class);
+        savedMoviesViewModel.init(this.getApplication());
+
         ImageView movieCoverImg = findViewById(R.id.movie_backdrop_image_view);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
 
@@ -111,6 +118,7 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_movie_details, menu);
+        new SetSaveAsync(savedMoviesViewModel, menu.findItem(R.id.menu_save_button), this).execute(currentUserId, currentMovie.getId());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -150,20 +158,33 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
             onBackPressed();
             return true;
         } else if (item.getItemId() == R.id.menu_share_button) {
-            String text;
-            if (video != null && video.isValidYoutubeTrailer()) {
-                text = Constants.YOUTUBE_URL + video.getKey();
-            } else {
-                text = "Check out this movie: " + currentMovie.getTitle();
-            }
-
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Share this movie");
-            intent.putExtra(Intent.EXTRA_TEXT, text);
-            startActivity(Intent.createChooser(intent, "Share using"));
+            setShareButtonAction();
+        } else if (item.getItemId() == R.id.menu_save_button) {
+            saveMovieToWatchlist(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setShareButtonAction() {
+        String text;
+        if (video != null && video.isValidYoutubeTrailer()) {
+            text = Constants.YOUTUBE_URL + video.getKey();
+        } else {
+            text = "Check out this movie: " + currentMovie.getTitle();
+        }
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Share this movie");
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        startActivity(Intent.createChooser(intent, "Share using"));
+    }
+
+    private void saveMovieToWatchlist(MenuItem item) {
+        boolean isChecked = item.getIcon().getConstantState().equals(
+                ResourcesCompat.getDrawable(getResources(), R.drawable.bookmark_filled, null).getConstantState());
+        savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId, currentMovie.getId().toString(), !isChecked));
+        item.setIcon(!isChecked ? R.drawable.bookmark_filled : R.drawable.bookmark);
     }
 
     private void setCastRecyclerView(long id) {
@@ -224,6 +245,33 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
             watchedMoviesLiveData.observe(owner, watchedMovie -> {
                 if (watchedMovie != null && watchedMovie.getVote() != null) {
                     ratingBar.setRating(watchedMovie.getVote());
+                }
+            });
+        }
+    }
+
+    private static class SetSaveAsync extends AsyncTask<Long, Void, LiveData<SavedMovie>> {
+        private final LifecycleOwner owner;
+        private final SavedMoviesViewModel savedMoviesViewModel;
+        private final MenuItem menuItem;
+
+        public SetSaveAsync(SavedMoviesViewModel savedMoviesViewModel, MenuItem menuItem, LifecycleOwner owner) {
+            this.savedMoviesViewModel = savedMoviesViewModel;
+            this.menuItem = menuItem;
+            this.owner = owner;
+        }
+
+        @Override
+        protected LiveData<SavedMovie> doInBackground(Long... longs) {
+            return savedMoviesViewModel.getSavedMovieByUserIdAndMovieId(longs[0], longs[1]);
+        }
+
+        @Override
+        protected void onPostExecute(LiveData<SavedMovie> savedMovieLiveData) {
+            super.onPostExecute(savedMovieLiveData);
+            savedMovieLiveData.observe(owner, savedMovie -> {
+                if (savedMovie != null) {
+                    menuItem.setIcon(savedMovie.getSaved() ? R.drawable.bookmark_filled : R.drawable.bookmark);
                 }
             });
         }
