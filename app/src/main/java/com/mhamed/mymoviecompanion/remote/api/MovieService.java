@@ -24,6 +24,9 @@ public interface MovieService {
 //    @GET("movie/{id}?append_to_response=videos,credits,reviews")
 //    Call<Movie> getMovieDetails(@Path("id") long id);
 
+    @GET("movie/{id}/similar")
+    Call<MoviesResponse> getSimilarMovies(@Path("id") Long id, @Query("page") int page);
+
     @GET("movie/{id}/credits")
     Call<CreditsResponse> getCast(@Path("id") Long id);
 
@@ -32,6 +35,7 @@ public interface MovieService {
 
     @GET("movie/{id}/reviews")
     Call<ReviewsResponse> getReviews(@Path("id") Long id);
+
 
     @GET("discover/movie")
     Call<MoviesResponse> discoverMoviesWithFilters(@Query("page") int page,

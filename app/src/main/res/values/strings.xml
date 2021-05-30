@@ -4,6 +4,7 @@
     <string name="movie_poster">Movie Poster</string>
     <string name="movie_backdrop">Movie Backdrop</string>
     <string name="cast">Cast</string>
+    <string name="similar_movies">Similar Movies</string>
     <string name="fab">fab</string>
     <string name="popular_movies">Popular movies</string>
     <string name="now_playing">Now playing</string>
