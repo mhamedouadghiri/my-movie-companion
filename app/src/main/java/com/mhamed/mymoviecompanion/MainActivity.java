@@ -1,15 +1,9 @@
 package com.mhamed.mymoviecompanion;
 
-
-import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -22,14 +16,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.material.navigation.NavigationView;
 import com.mhamed.mymoviecompanion.entity.User;
-
-import com.mhamed.mymoviecompanion.remote.api.ApiClient;
-import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.ui.GenreActivity;
-import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
-import com.mhamed.mymoviecompanion.ui.MovieDetailActivity;
-import com.mhamed.mymoviecompanion.util.GenreUtil;
-
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
 import com.mhamed.mymoviecompanion.util.BaseActivity;
 
@@ -96,15 +83,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                logout();
-                break;
-            default:
-                Intent intent = new Intent(this, GenreActivity.class);
-                intent.putExtra("genre", item.getTitle().toString());
-                startActivity(intent);
-                break;
+        if (item.getItemId() == R.id.logout) {
+            logout();
+        } else {
+            Intent intent = new Intent(this, GenreActivity.class);
+            intent.putExtra("genre", item.getTitle().toString());
+            startActivity(intent);
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
