@@ -8,10 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -60,7 +60,6 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
 
     private RecyclerView castRecyclerView;
     private Video video;
-    private Button share;
     private FloatingActionButton playTrailerFAB;
     private RatingBar ratingBar;
 
@@ -103,23 +102,16 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         setCastRecyclerView(currentMovie.getId());
         setVideo(currentMovie.getId());
 
-        share = findViewById(R.id.share);
-        setShareButton();
-
         playTrailerFAB = findViewById(R.id.play_fab);
         setPlayTrailerFAB();
 
         new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(currentUserId, currentMovie.getId());
     }
 
-    private void setShareButton() {
-        share.setOnClickListener((v -> {
-            Intent SharingFilm = new Intent(Intent.ACTION_SEND);
-            SharingFilm.setType("text/plain");
-            SharingFilm.putExtra(Intent.EXTRA_SUBJECT, "SUBJECT");
-            SharingFilm.putExtra(Intent.EXTRA_TEXT, Constants.YOUTUBE_URL + video.getKey());
-            startActivity(Intent.createChooser(SharingFilm, "SHARING"));
-        }));
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_movie_details, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private void setPlayTrailerFAB() {
@@ -157,6 +149,19 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.menu_share_button) {
+            String text;
+            if (video != null && video.isValidYoutubeTrailer()) {
+                text = Constants.YOUTUBE_URL + video.getKey();
+            } else {
+                text = "Check out this movie: " + currentMovie.getTitle();
+            }
+
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Share this movie");
+            intent.putExtra(Intent.EXTRA_TEXT, text);
+            startActivity(Intent.createChooser(intent, "Share using"));
         }
         return super.onOptionsItemSelected(item);
     }
