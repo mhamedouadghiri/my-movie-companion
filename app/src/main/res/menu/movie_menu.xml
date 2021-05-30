@@ -1,23 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/Romantic"
-            android:title="Romantic" />
-        <item
-            android:id="@+id/Cartoon"
-            android:title="Cartoon" />
-        <item
-            android:id="@+id/War"
-            android:title="War" />
-        <item
-            android:id="@+id/horror"
-            android:title="horror" />
-        <item
-            android:id="@+id/Action"
-            android:title="Action" />
-    </group>
+    <item android:title="Genres">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/Action"
+                    android:title="Action" />
+                <item
+                    android:id="@+id/Adventure"
+                    android:title="Adventure" />
+                <item
+                    android:id="@+id/Animation"
+                    android:title="Animation" />
+                <item
+                    android:id="@+id/Comedy"
+                    android:title="Comedy" />
+                <item
+                    android:id="@+id/Crime"
+                    android:title="Crime" />
+                <item
+                    android:id="@+id/Documentary"
+                    android:title="Documentary" />
+                <item
+                    android:id="@+id/Drama"
+                    android:title="Drama" />
+                <item
+                    android:id="@+id/Family"
+                    android:title="Family" />
+                <item
+                    android:id="@+id/Fantasy"
+                    android:title="Fantasy" />
+                <item
+                    android:id="@+id/History"
+                    android:title="History" />
+                <item
+                    android:id="@+id/Horror"
+                    android:title="Horror" />
+                <item
+                    android:id="@+id/Music"
+                    android:title="Music" />
+                <item
+                    android:id="@+id/Mystery"
+                    android:title="Mystery" />
+                <item
+                    android:id="@+id/Romance"
+                    android:title="Romance" />
+                <item
+                    android:id="@+id/Science"
+                    android:title="Science Fiction" />
+                <item
+                    android:id="@+id/TV"
+                    android:title="TV Movie" />
+                <item
+                    android:id="@+id/Thriller"
+                    android:title="Thriller" />
+                <item
+                    android:id="@+id/War"
+                    android:title="War" />
+                <item
+                    android:id="@+id/Western"
+                    android:title="Western" />
+            </group>
+        </menu>
+    </item>
 
     <item android:title="User">
         <menu>
