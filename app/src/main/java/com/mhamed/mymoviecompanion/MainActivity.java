@@ -80,12 +80,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.logout) {
-            logout();
-        } else {
+        if (item.getGroupId() == R.id.menu_genres_group) {
             Intent intent = new Intent(this, GenreActivity.class);
             intent.putExtra("genre", item.getTitle().toString());
             startActivity(intent);
+        } else if (item.getGroupId() == R.id.menu_user_group) {
+            if (item.getItemId() == R.id.logout) {
+                logout();
+            }
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;

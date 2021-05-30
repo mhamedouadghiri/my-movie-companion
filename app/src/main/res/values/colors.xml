@@ -10,6 +10,7 @@
     <color name="colorViolet">#8813e4</color>
     <color name="colorBlue">#3d93d9</color>
     <color name="colorGreenLight">#5ff0f7</color>
+    <color name="colorGrayLight">#e0e0e0</color>
 
     <color name="colorText">#f5f5f5</color>
 </resources>

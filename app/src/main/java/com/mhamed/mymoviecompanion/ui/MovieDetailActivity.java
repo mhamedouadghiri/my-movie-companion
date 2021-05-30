@@ -10,7 +10,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.mhamed.mymoviecompanion.CustomDialog;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.CastAdapter;
 import com.mhamed.mymoviecompanion.databinding.ActivityMovieDetailBinding;
@@ -52,7 +50,7 @@ import java.util.stream.Collectors;
 
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 
-public class MovieDetailActivity extends BaseActivity implements CustomDialog.CustomDialogInterface {
+public class MovieDetailActivity extends BaseActivity {
 
     private static final String TAG = "MOVIE_DETAIL_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
@@ -209,18 +207,6 @@ public class MovieDetailActivity extends BaseActivity implements CustomDialog.Cu
                 Log.e(TAG, response.errorBody().toString());
             }
         });
-    }
-
-    public void openDialog(View view) {
-        CustomDialog custom_dialog = new CustomDialog();
-        custom_dialog.show(getSupportFragmentManager(), "Test CustomerDialog");
-    }
-
-    @Override
-    public void applyTexts(String critique, int note) {
-        Log.i("Note", String.valueOf(note));
-        //Insertion de FilmsVus
-        //filmsVusViewModel.insertWatchedMovie(new FilmsVus(1,video.getId(),note,critique));
     }
 
     private static class SetRatingAsync extends AsyncTask<Long, Void, LiveData<WatchedMovie>> {
