@@ -11,38 +11,33 @@ import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MovieGenrePageKeyedDataSource extends PageKeyedDataSource<Integer, Movie> {
+public class SimilarMoviesPageKeyedDataSource extends PageKeyedDataSource<Integer, Movie> {
 
     private static final int FIRST_PAGE = 1;
 
     private final MovieService movieService = ApiClient.getInstance();
-    private final Long genreId;
+    private final Long movieId;
 
     public MutableLiveData<Resource> networkState = new MutableLiveData<>();
     public RetryCallback retryCallback = null;
 
-    String currentDate;
 
-    public MovieGenrePageKeyedDataSource(Long genreId) {
-        this.genreId = genreId;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        currentDate = sdf.format(new Date());
+    public SimilarMoviesPageKeyedDataSource(Long movieId) {
+        this.movieId = movieId;
     }
 
     @Override
     public void loadInitial(@NonNull final LoadInitialParams<Integer> params, @NonNull final LoadInitialCallback<Integer, Movie> callback) {
         networkState.postValue(Resource.loading(null));
 
-        Call<MoviesResponse> request = movieService.discoverMoviesWithFilters(FIRST_PAGE, "popularity.desc", String.valueOf(genreId), null, currentDate, null);
+        Call<MoviesResponse> request = movieService.getSimilarMovies(movieId, FIRST_PAGE);
 
         // we execute sync since this is triggered by refresh
         try {
@@ -67,7 +62,7 @@ public class MovieGenrePageKeyedDataSource extends PageKeyedDataSource<Integer, 
     public void loadAfter(@NonNull final LoadParams<Integer> params, @NonNull final LoadCallback<Integer, Movie> callback) {
         networkState.postValue(Resource.loading(null));
 
-        Call<MoviesResponse> request = movieService.discoverMoviesWithFilters(params.key, "popularity.desc", String.valueOf(genreId), null, currentDate, null);
+        Call<MoviesResponse> request = movieService.getSimilarMovies(movieId, params.key);
 
         request.enqueue(new Callback<MoviesResponse>() {
             @Override

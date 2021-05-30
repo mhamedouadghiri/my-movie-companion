@@ -300,6 +300,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/label_cast" />
 
+            <TextView
+                android:id="@+id/label_similar_movies"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dimens_small"
+                android:layout_marginTop="@dimen/dimens_small"
+                android:layout_marginEnd="@dimen/dimens_small"
+                android:text="@string/similar_movies"
+                android:textColor="@color/colorText"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cast_recycler_view"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/similar_movies_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/label_similar_movies" />
 <!--                        <ToggleButton-->
 <!--                            android:id="@+id/favoris"-->
 <!--                            android:layout_width="30dp"-->
