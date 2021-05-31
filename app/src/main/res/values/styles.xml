@@ -21,4 +21,9 @@
         <item name="colorControlActivated">@color/colorBlue</item>
         <item name="android:progressTint">@color/colorBlue</item>
     </style>
+
+    <style name="NavigationViewStyle">
+        <item name="android:textSize">20sp</item>
+        <item name="android:listPreferredItemHeightSmall">40dp</item>
+    </style>
 </resources>

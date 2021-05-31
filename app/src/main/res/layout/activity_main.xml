@@ -24,10 +24,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorWhite"
+        android:background="@color/colorPrimaryDark"
         app:headerLayout="@layout/header"
-        app:itemIconTint="@color/colorGreenLight"
-        app:itemTextColor="@color/colorAccent"
+        app:itemIconTint="@color/colorWhite"
+        app:itemTextAppearance="?attr/textAppearanceSubtitle2"
+        app:itemTextColor="@color/colorText"
         app:menu="@menu/movie_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

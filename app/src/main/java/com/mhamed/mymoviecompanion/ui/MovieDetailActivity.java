@@ -187,9 +187,9 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
 
     private void saveMovieToWatchlist(MenuItem item) {
         boolean isChecked = item.getIcon().getConstantState().equals(
-                ResourcesCompat.getDrawable(getResources(), R.drawable.bookmark_filled, null).getConstantState());
+                ResourcesCompat.getDrawable(getResources(), R.drawable.ic_bookmark_filled, null).getConstantState());
         savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId, currentMovie.getId().toString(), !isChecked));
-        item.setIcon(!isChecked ? R.drawable.bookmark_filled : R.drawable.bookmark);
+        item.setIcon(!isChecked ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark);
     }
 
     private void setCastRecyclerView(long id) {
@@ -282,7 +282,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
             super.onPostExecute(savedMovieLiveData);
             savedMovieLiveData.observe(owner, savedMovie -> {
                 if (savedMovie != null) {
-                    menuItem.setIcon(savedMovie.getSaved() ? R.drawable.bookmark_filled : R.drawable.bookmark);
+                    menuItem.setIcon(savedMovie.getSaved() ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark);
                 }
             });
         }
