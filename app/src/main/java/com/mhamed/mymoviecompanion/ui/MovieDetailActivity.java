@@ -46,9 +46,8 @@ import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
-import com.mhamed.mymoviecompanion.viewmodel.MovieGenreViewModel;
-import com.mhamed.mymoviecompanion.viewmodel.SimilarMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.SavedMoviesViewModel;
+import com.mhamed.mymoviecompanion.viewmodel.SimilarMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
 
 import java.util.List;
@@ -56,7 +55,7 @@ import java.util.stream.Collectors;
 
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 
-public class MovieDetailActivity extends BaseActivity {
+public class MovieDetailActivity extends BaseActivity implements MovieItemClickListener {
 
     private static final String TAG = "MOVIE_DETAIL_ACTIVITY";
     private final MovieService movieService = ApiClient.getInstance();
@@ -109,7 +108,7 @@ public class MovieDetailActivity extends BaseActivity {
 
         ImageView movieCoverImg = findViewById(R.id.movie_backdrop_image_view);
         movieCoverImg.setAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation));
-      
+
         setCastRecyclerView(currentMovie.getId());
         setVideo(currentMovie.getId());
 
@@ -117,8 +116,8 @@ public class MovieDetailActivity extends BaseActivity {
         setPlayTrailerFAB();
 
         new SetRatingAsync(watchedMoviesViewModel, ratingBar, this).execute(currentUserId, currentMovie.getId());
-      
-        setSimilarMoviesRecyclerView(movie.getId());
+
+        setSimilarMoviesRecyclerView(currentMovie.getId());
     }
 
     @Override

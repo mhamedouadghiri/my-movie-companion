@@ -5,12 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,13 +19,14 @@ import com.mhamed.mymoviecompanion.adapters.MovieAdapter;
 import com.mhamed.mymoviecompanion.adapters.MovieItemClickListener;
 import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.remote.paging.MovieGenreDataSourceFactory;
+import com.mhamed.mymoviecompanion.util.BaseActivity;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.viewmodel.MovieGenreViewModel;
 
-public class GenreActivity extends AppCompatActivity implements MovieItemClickListener {
+public class GenreActivity extends BaseActivity implements MovieItemClickListener {
 
-    Long genreId;
-    String genreName;
+    private Long genreId;
+    private String genreName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
