@@ -2,20 +2,34 @@ package com.mhamed.mymoviecompanion.entity;
 
 import androidx.annotation.NonNull;
 
-public class BaseMovieEntity {
+public abstract class BaseMovieEntity {
+
+    @NonNull
+    protected Long userId;
 
     @NonNull
     protected String movieId;
 
     @NonNull
-    private String title;
+    protected String title;
 
     @NonNull
-    private String posterPath;
+    protected String posterPath;
 
-    public BaseMovieEntity(@NonNull String title, @NonNull String posterPath) {
+    public BaseMovieEntity(@NonNull Long userId, @NonNull String movieId, @NonNull String title, @NonNull String posterPath) {
+        this.userId = userId;
+        this.movieId = movieId;
         this.title = title;
         this.posterPath = posterPath;
+    }
+
+    @NonNull
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(@NonNull Long userId) {
+        this.userId = userId;
     }
 
     @NonNull

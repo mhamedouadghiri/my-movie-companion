@@ -11,25 +11,11 @@ import java.io.Serializable;
 public class WatchedMovie extends BaseMovieEntity implements Serializable {
 
     @NonNull
-    private Long userId;
-
-    @NonNull
     private Float rating;
 
     public WatchedMovie(@NonNull Long userId, @NonNull String movieId, @NonNull Float rating, @NonNull String title, @NonNull String posterPath) {
-        super(title, posterPath);
-        this.userId = userId;
-        this.movieId = movieId;
+        super(userId, movieId, title, posterPath);
         this.rating = rating;
-    }
-
-    @NonNull
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(@NonNull Long userId) {
-        this.userId = userId;
     }
 
     @NonNull

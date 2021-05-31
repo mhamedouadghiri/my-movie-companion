@@ -44,9 +44,11 @@ import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.remote.paging.SimilarMoviesDataSourceFactory;
 import com.mhamed.mymoviecompanion.util.BaseActivity;
+import com.mhamed.mymoviecompanion.util.BindingAdapters;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
+import com.mhamed.mymoviecompanion.util.SpacingItemDecorator;
 import com.mhamed.mymoviecompanion.viewmodel.SavedMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.SimilarMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
@@ -222,10 +224,13 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
         final MovieAdapter movieAdapter = new MovieAdapter(this, this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.addItemDecoration(new SpacingItemDecorator((int) BindingAdapters.dipToPixels(this, 8)));
         viewModel.getPagedList().observe(this, pagedList -> {
-            if (pagedList.isEmpty())
+            if (pagedList.isEmpty()) {
                 findViewById(R.id.label_similar_movies).setVisibility(View.GONE);
-            else movieAdapter.submitList(pagedList);
+            } else {
+                movieAdapter.submitList(pagedList);
+            }
         });
         viewModel.getNetworkState().observe(this, movieAdapter::setNetworkState);
     }
