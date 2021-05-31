@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId")},
         primaryKeys = {"movieId", "userId"})
-public class SavedMovie implements Serializable {
+public class SavedMovie extends BaseMovieEntity implements Serializable {
 
     @NonNull
     private Long userId;
@@ -19,7 +19,8 @@ public class SavedMovie implements Serializable {
     @NonNull
     private Boolean saved;
 
-    public SavedMovie(@NonNull Long userId, @NonNull String movieId, @NonNull Boolean saved) {
+    public SavedMovie(@NonNull Long userId, @NonNull String movieId, @NonNull Boolean saved, @NonNull String title, @NonNull String posterPath) {
+        super(title, posterPath);
         this.userId = userId;
         this.movieId = movieId;
         this.saved = saved;

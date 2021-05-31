@@ -146,7 +146,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
 
         ratingBar = findViewById(R.id.rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) ->
-                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(currentUserId, String.valueOf(currentMovie.getId()), rating, ""))
+                watchedMoviesViewModel.insertWatchedMovie(
+                        new WatchedMovie(currentUserId,
+                                String.valueOf(currentMovie.getId()),
+                                rating,
+                                currentMovie.getTitle(),
+                                currentMovie.getPosterPath()))
         );
     }
 
@@ -188,7 +193,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
     private void saveMovieToWatchlist(MenuItem item) {
         boolean isChecked = item.getIcon().getConstantState().equals(
                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_bookmark_filled, null).getConstantState());
-        savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId, currentMovie.getId().toString(), !isChecked));
+        savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId,
+                currentMovie.getId().toString(),
+                !isChecked,
+                currentMovie.getTitle(),
+                currentMovie.getPosterPath()));
         item.setIcon(!isChecked ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark);
     }
 
@@ -254,8 +263,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
         protected void onPostExecute(LiveData<WatchedMovie> watchedMoviesLiveData) {
             super.onPostExecute(watchedMoviesLiveData);
             watchedMoviesLiveData.observe(owner, watchedMovie -> {
-                if (watchedMovie != null && watchedMovie.getVote() != null) {
-                    ratingBar.setRating(watchedMovie.getVote());
+                if (watchedMovie != null && watchedMovie.getRating() != null) {
+                    ratingBar.setRating(watchedMovie.getRating());
                 }
             });
         }

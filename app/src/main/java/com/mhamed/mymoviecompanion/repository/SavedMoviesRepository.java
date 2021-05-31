@@ -21,7 +21,7 @@ public class SavedMoviesRepository {
         savedMoviesDAO = database.savedMoviesDAO();
     }
 
-    public LiveData<List<SavedMovie>> getAllSavedMoviesByUserId(Long userId) {
+    public List<SavedMovie> getAllSavedMoviesByUserId(Long userId) {
         return savedMoviesDAO.getAllSavedMoviesByUserId(userId);
     }
 

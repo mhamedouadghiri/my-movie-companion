@@ -21,7 +21,7 @@ public class WatchedMoviesRepository {
         watchedMoviesDAO = database.watchedMoviesDAO();
     }
 
-    public LiveData<List<WatchedMovie>> getAllWatchedMoviesByUserId(Long userId) {
+    public List<WatchedMovie> getAllWatchedMoviesByUserId(Long userId) {
         return watchedMoviesDAO.getAllWatchedMoviesByUserId(userId);
     }
 
