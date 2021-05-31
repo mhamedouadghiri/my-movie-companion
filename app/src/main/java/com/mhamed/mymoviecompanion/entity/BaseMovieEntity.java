@@ -5,6 +5,9 @@ import androidx.annotation.NonNull;
 public class BaseMovieEntity {
 
     @NonNull
+    protected String movieId;
+
+    @NonNull
     private String title;
 
     @NonNull
@@ -13,6 +16,15 @@ public class BaseMovieEntity {
     public BaseMovieEntity(@NonNull String title, @NonNull String posterPath) {
         this.title = title;
         this.posterPath = posterPath;
+    }
+
+    @NonNull
+    public String getMovieId() {
+        return movieId;
+    }
+
+    public void setMovieId(@NonNull String movieId) {
+        this.movieId = movieId;
     }
 
     @NonNull

@@ -205,7 +205,9 @@ public class Movie implements Serializable {
     }
 
     public List<Long> getGenreIds() {
-        return genreIds;
+        if(genreIds != null)
+            return genreIds;
+        else return this.genres.stream().map(genre->genre.getId()).collect(Collectors.toList());
     }
 
     public void setGenreIds(List<Long> genreIds) {

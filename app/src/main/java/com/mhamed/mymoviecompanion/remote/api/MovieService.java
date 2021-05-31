@@ -1,6 +1,7 @@
 package com.mhamed.mymoviecompanion.remote.api;
 
 import com.mhamed.mymoviecompanion.model.CreditsResponse;
+import com.mhamed.mymoviecompanion.model.Movie;
 import com.mhamed.mymoviecompanion.model.MoviesResponse;
 import com.mhamed.mymoviecompanion.model.ReviewsResponse;
 import com.mhamed.mymoviecompanion.model.VideosResponse;
@@ -23,6 +24,9 @@ public interface MovieService {
 
 //    @GET("movie/{id}?append_to_response=videos,credits,reviews")
 //    Call<Movie> getMovieDetails(@Path("id") long id);
+
+    @GET("movie/{id}")
+    Call<Movie> getMovieDetails(@Path("id") long id);
 
     @GET("movie/{id}/similar")
     Call<MoviesResponse> getSimilarMovies(@Path("id") Long id, @Query("page") int page);

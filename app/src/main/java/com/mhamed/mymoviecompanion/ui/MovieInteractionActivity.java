@@ -1,8 +1,12 @@
 package com.mhamed.mymoviecompanion.ui;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,8 +18,13 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.mhamed.mymoviecompanion.R;
 import com.mhamed.mymoviecompanion.adapters.BaseMovieEntityAdapter;
+import com.mhamed.mymoviecompanion.adapters.MovieEntityItemClickListener;
 import com.mhamed.mymoviecompanion.entity.BaseMovieEntity;
+import com.mhamed.mymoviecompanion.model.Movie;
+import com.mhamed.mymoviecompanion.remote.api.ApiClient;
+import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.util.BaseActivity;
+import com.mhamed.mymoviecompanion.util.SimpleCallback;
 import com.mhamed.mymoviecompanion.viewmodel.SavedMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
 
@@ -23,11 +32,12 @@ import java.util.List;
 
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 
-public class MovieInteractionActivity extends BaseActivity {
+public class MovieInteractionActivity extends BaseActivity implements MovieEntityItemClickListener {
 
     private Long currentUserId;
 
     private String type;
+    private final MovieService movieService = ApiClient.getInstance();
 
     private WatchedMoviesViewModel watchedMoviesViewModel;
     private SavedMoviesViewModel savedMoviesViewModel;
@@ -86,7 +96,23 @@ public class MovieInteractionActivity extends BaseActivity {
         FlexboxLayoutManager layout = new FlexboxLayoutManager(this);
         layout.setJustifyContent(JustifyContent.SPACE_AROUND);
         recyclerView.setLayoutManager(layout);
-        BaseMovieEntityAdapter adapter = new BaseMovieEntityAdapter(movies);
+        BaseMovieEntityAdapter adapter = new BaseMovieEntityAdapter(movies, this);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onMovieClick(BaseMovieEntity movie, ImageView movieImageView) {
+        movieService.getMovieDetails(Long.parseLong(movie.getMovieId())).enqueue((SimpleCallback<Movie>) (call, response) -> {
+            if (response.isSuccessful() && response.body() != null) {
+                Intent intent = new Intent(this, MovieDetailActivity.class);
+                Movie apiResponse = response.body();
+                intent.putExtra("movie", apiResponse);
+                ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(this, movieImageView, "sharedName");
+                startActivity(intent, options.toBundle());
+            } else {
+                Log.e("MOVIE_INTERACTION_DETAILS", response.errorBody().toString());
+            }
+        });
+
     }
 }

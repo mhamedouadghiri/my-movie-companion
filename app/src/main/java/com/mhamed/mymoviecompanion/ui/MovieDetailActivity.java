@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -221,7 +222,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
         final MovieAdapter movieAdapter = new MovieAdapter(this, this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
-        viewModel.getPagedList().observe(this, movieAdapter::submitList);
+        viewModel.getPagedList().observe(this, pagedList -> {
+            if (pagedList.isEmpty())
+                findViewById(R.id.label_similar_movies).setVisibility(View.GONE);
+            else movieAdapter.submitList(pagedList);
+        });
         viewModel.getNetworkState().observe(this, movieAdapter::setNetworkState);
     }
 
