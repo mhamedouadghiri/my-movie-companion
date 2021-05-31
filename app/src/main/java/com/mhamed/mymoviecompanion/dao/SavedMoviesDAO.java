@@ -17,7 +17,7 @@ public interface SavedMoviesDAO {
     void insertSavedMovie(SavedMovie savedMovie);
 
     @Query("SELECT * From SavedMovie where userId=(:userId) and saved = 1")
-    LiveData<List<SavedMovie>> getAllSavedMoviesByUserId(Long userId);
+    List<SavedMovie> getAllSavedMoviesByUserId(Long userId);
 
     @Query("select * from SavedMovie where userId=(:userId) and movieId=(:movieId)")
     LiveData<SavedMovie> getSavedMovieByUserIdAndMovieId(Long userId, Long movieId);

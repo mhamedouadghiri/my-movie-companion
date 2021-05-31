@@ -22,7 +22,7 @@ public class WatchedMoviesViewModel extends ViewModel {
         watchedMoviesRepository.insertWatchedMovie(watchedMovie);
     }
 
-    public LiveData<List<WatchedMovie>> getAllWatchedMoviesByUserId(Long userId) {
+    public List<WatchedMovie> getAllWatchedMoviesByUserId(Long userId) {
         return watchedMoviesRepository.getAllWatchedMoviesByUserId(userId);
     }
 

@@ -17,7 +17,7 @@ public interface WatchedMoviesDAO {
     void insertWatchedMovie(WatchedMovie watchedMovie);
 
     @Query("SELECT * From WatchedMovie where userId=(:userId) ")
-    LiveData<List<WatchedMovie>> getAllWatchedMoviesByUserId(Long userId);
+    List<WatchedMovie> getAllWatchedMoviesByUserId(Long userId);
 
     @Query("select * from WatchedMovie where userId=(:userId) and movieId=(:movieId)")
     LiveData<WatchedMovie> getWatchedMovieByUserIdAndMovieId(Long userId, Long movieId);

@@ -73,15 +73,15 @@
                 android:id="@+id/menu_user_group"
                 android:checkableBehavior="none">
                 <item
-                    android:id="@+id/watched"
+                    android:id="@+id/menu_watched"
                     android:icon="@drawable/ic_star_white_24dp"
                     android:title="@string/watched_movies" />
                 <item
-                    android:id="@+id/watchlist"
+                    android:id="@+id/menu_watchlist"
                     android:icon="@drawable/ic_bookmark_watched"
                     android:title="@string/watchlist" />
                 <item
-                    android:id="@+id/logout"
+                    android:id="@+id/menu_logout"
                     android:icon="@drawable/ic_baseline_login_24"
                     android:title="@string/logout" />
             </group>

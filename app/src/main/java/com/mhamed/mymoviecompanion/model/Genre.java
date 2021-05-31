@@ -1,6 +1,9 @@
 package com.mhamed.mymoviecompanion.model;
 
-public class Genre {
+import java.io.Serializable;
+
+public class Genre implements Serializable
+{
 
     private Long id;
 

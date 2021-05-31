@@ -24,8 +24,9 @@ public abstract class ConfigDatabase extends RoomDatabase {
         if (INSTANCE == null) {
             synchronized (ConfigDatabase.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                            ConfigDatabase.class, "films.db").fallbackToDestructiveMigration()
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(), ConfigDatabase.class, "films.db")
+                            .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build();
                 }
             }

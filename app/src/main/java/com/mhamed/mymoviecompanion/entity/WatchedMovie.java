@@ -8,55 +8,22 @@ import java.io.Serializable;
 
 @Entity(foreignKeys = {@ForeignKey(entity = User.class, parentColumns = "id", childColumns = "userId")},
         primaryKeys = {"movieId", "userId"})
-public class WatchedMovie implements Serializable {
+public class WatchedMovie extends BaseMovieEntity implements Serializable {
 
     @NonNull
-    private Long userId;
+    private Float rating;
 
-    @NonNull
-    private String movieId;
-
-    private Float vote;
-
-    private String review;
-
-    public WatchedMovie(Long userId, String movieId, float vote, String review) {
-        this.userId = userId;
-        this.movieId = movieId;
-        this.vote = vote;
-        this.review = review;
+    public WatchedMovie(@NonNull Long userId, @NonNull String movieId, @NonNull Float rating, @NonNull String title, @NonNull String posterPath) {
+        super(userId, movieId, title, posterPath);
+        this.rating = rating;
     }
 
     @NonNull
-    public Long getUserId() {
-        return userId;
+    public Float getRating() {
+        return rating;
     }
 
-    public void setUserId(@NonNull Long userId) {
-        this.userId = userId;
-    }
-
-    public String getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(String movieId) {
-        this.movieId = movieId;
-    }
-
-    public Float getVote() {
-        return vote;
-    }
-
-    public void setVote(Float vote) {
-        this.vote = vote;
-    }
-
-    public String getReview() {
-        return review;
-    }
-
-    public void setReview(String review) {
-        this.review = review;
+    public void setRating(@NonNull Float rating) {
+        this.rating = rating;
     }
 }

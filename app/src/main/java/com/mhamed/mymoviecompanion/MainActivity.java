@@ -17,6 +17,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.mhamed.mymoviecompanion.ui.GenreActivity;
 import com.mhamed.mymoviecompanion.ui.ListMoviesFragment;
+import com.mhamed.mymoviecompanion.ui.MovieInteractionActivity;
 import com.mhamed.mymoviecompanion.util.BaseActivity;
 
 import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_EMAIL;
@@ -85,8 +86,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             intent.putExtra("genre", item.getTitle().toString());
             startActivity(intent);
         } else if (item.getGroupId() == R.id.menu_user_group) {
-            if (item.getItemId() == R.id.logout) {
+            if (item.getItemId() == R.id.menu_logout) {
                 logout();
+            } else if (item.getItemId() == R.id.menu_watched || item.getItemId() == R.id.menu_watchlist) {
+                Intent intent = new Intent(this, MovieInteractionActivity.class);
+                intent.putExtra("type", item.getTitle().toString());
+                startActivity(intent);
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START);

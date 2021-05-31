@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -43,9 +44,11 @@ import com.mhamed.mymoviecompanion.remote.api.ApiClient;
 import com.mhamed.mymoviecompanion.remote.api.MovieService;
 import com.mhamed.mymoviecompanion.remote.paging.SimilarMoviesDataSourceFactory;
 import com.mhamed.mymoviecompanion.util.BaseActivity;
+import com.mhamed.mymoviecompanion.util.BindingAdapters;
 import com.mhamed.mymoviecompanion.util.Constants;
 import com.mhamed.mymoviecompanion.util.GenreUtil;
 import com.mhamed.mymoviecompanion.util.SimpleCallback;
+import com.mhamed.mymoviecompanion.util.SpacingItemDecorator;
 import com.mhamed.mymoviecompanion.viewmodel.SavedMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.SimilarMoviesViewModel;
 import com.mhamed.mymoviecompanion.viewmodel.WatchedMoviesViewModel;
@@ -146,7 +149,12 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
 
         ratingBar = findViewById(R.id.rating_bar);
         ratingBar.setOnRatingBarChangeListener((ratingBar1, rating, fromUser) ->
-                watchedMoviesViewModel.insertWatchedMovie(new WatchedMovie(currentUserId, String.valueOf(currentMovie.getId()), rating, ""))
+                watchedMoviesViewModel.insertWatchedMovie(
+                        new WatchedMovie(currentUserId,
+                                String.valueOf(currentMovie.getId()),
+                                rating,
+                                currentMovie.getTitle(),
+                                currentMovie.getPosterPath()))
         );
     }
 
@@ -188,7 +196,11 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
     private void saveMovieToWatchlist(MenuItem item) {
         boolean isChecked = item.getIcon().getConstantState().equals(
                 ResourcesCompat.getDrawable(getResources(), R.drawable.ic_bookmark_filled, null).getConstantState());
-        savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId, currentMovie.getId().toString(), !isChecked));
+        savedMoviesViewModel.insertSavedMovie(new SavedMovie(currentUserId,
+                currentMovie.getId().toString(),
+                !isChecked,
+                currentMovie.getTitle(),
+                currentMovie.getPosterPath()));
         item.setIcon(!isChecked ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark);
     }
 
@@ -212,7 +224,14 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
         final MovieAdapter movieAdapter = new MovieAdapter(this, this, viewModel);
         recyclerView.setAdapter(movieAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MovieDetailActivity.this, LinearLayoutManager.HORIZONTAL, false));
-        viewModel.getPagedList().observe(this, movieAdapter::submitList);
+        recyclerView.addItemDecoration(new SpacingItemDecorator((int) BindingAdapters.dipToPixels(this, 8)));
+        viewModel.getPagedList().observe(this, pagedList -> {
+            if (pagedList.isEmpty()) {
+                findViewById(R.id.label_similar_movies).setVisibility(View.GONE);
+            } else {
+                movieAdapter.submitList(pagedList);
+            }
+        });
         viewModel.getNetworkState().observe(this, movieAdapter::setNetworkState);
     }
 
@@ -254,8 +273,8 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
         protected void onPostExecute(LiveData<WatchedMovie> watchedMoviesLiveData) {
             super.onPostExecute(watchedMoviesLiveData);
             watchedMoviesLiveData.observe(owner, watchedMovie -> {
-                if (watchedMovie != null && watchedMovie.getVote() != null) {
-                    ratingBar.setRating(watchedMovie.getVote());
+                if (watchedMovie != null && watchedMovie.getRating() != null) {
+                    ratingBar.setRating(watchedMovie.getRating());
                 }
             });
         }
