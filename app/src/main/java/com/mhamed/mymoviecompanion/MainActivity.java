@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         } else if (item.getGroupId() == R.id.menu_user_group) {
             if (item.getItemId() == R.id.menu_logout) {
                 logout();
-            } else if (item.getItemId() == R.id.menu_watched || item.getItemId() == R.id.menu_watchlist) {
+            } else if (item.getItemId() == R.id.menu_watchlist || item.getItemId() == R.id.menu_watched) {
                 Intent intent = new Intent(this, MovieInteractionActivity.class);
                 intent.putExtra("type", item.getTitle().toString());
                 startActivity(intent);
