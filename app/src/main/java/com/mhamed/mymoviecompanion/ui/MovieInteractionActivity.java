@@ -34,10 +34,11 @@ import static com.mhamed.mymoviecompanion.util.Constants.PREFERENCES_LOGIN_ID;
 
 public class MovieInteractionActivity extends BaseActivity implements MovieEntityItemClickListener {
 
+    private final MovieService movieService = ApiClient.getInstance();
+
     private Long currentUserId;
 
     private String type;
-    private final MovieService movieService = ApiClient.getInstance();
 
     private WatchedMoviesViewModel watchedMoviesViewModel;
     private SavedMoviesViewModel savedMoviesViewModel;
@@ -60,6 +61,14 @@ public class MovieInteractionActivity extends BaseActivity implements MovieEntit
         savedMoviesViewModel = new ViewModelProvider(this).get(SavedMoviesViewModel.class);
         savedMoviesViewModel.init(this.getApplication());
 
+
+        setMovies();
+        initMovies();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         setMovies();
         initMovies();
@@ -113,6 +122,5 @@ public class MovieInteractionActivity extends BaseActivity implements MovieEntit
                 Log.e("MOVIE_INTERACTION_DETAILS", response.errorBody().toString());
             }
         });
-
     }
 }
