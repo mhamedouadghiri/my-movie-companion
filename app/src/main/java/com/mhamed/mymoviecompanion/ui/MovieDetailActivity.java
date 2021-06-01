@@ -220,6 +220,7 @@ public class MovieDetailActivity extends BaseActivity implements MovieItemClickL
 
     private void setSimilarMoviesRecyclerView(long id) {
         RecyclerView recyclerView = findViewById(R.id.similar_movies_recycler_view);
+        recyclerView.setItemAnimator(null);
         SimilarMoviesViewModel viewModel = new ViewModelProvider(this, new SimilarMoviesDataSourceFactory(id)).get(SimilarMoviesViewModel.class);
         final MovieAdapter movieAdapter = new MovieAdapter(this, this, viewModel);
         recyclerView.setAdapter(movieAdapter);
