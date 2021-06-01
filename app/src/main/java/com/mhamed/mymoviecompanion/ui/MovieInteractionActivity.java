@@ -61,7 +61,6 @@ public class MovieInteractionActivity extends BaseActivity implements MovieEntit
         savedMoviesViewModel = new ViewModelProvider(this).get(SavedMoviesViewModel.class);
         savedMoviesViewModel.init(this.getApplication());
 
-
         setMovies();
         initMovies();
     }
@@ -70,8 +69,10 @@ public class MovieInteractionActivity extends BaseActivity implements MovieEntit
     protected void onResume() {
         super.onResume();
 
-        setMovies();
-        initMovies();
+        if (type.equals(getString(R.string.watchlist))) {
+            setMovies();
+            initMovies();
+        }
     }
 
     private void setupToolbar() {
